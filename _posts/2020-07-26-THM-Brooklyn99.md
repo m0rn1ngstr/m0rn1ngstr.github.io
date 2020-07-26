@@ -21,7 +21,8 @@ Brooklyn 99 is a great machine to get started. It combines pretty realistic comp
 Hello, unsolved case, let's start.
 
 ## Enumeration
-Starting with `nmap` to determine what ports are open and what services are running
+Starting with `nmap` to determine what ports are open and what services are running.
+
 I usually run with these options:
 
 - T4 {T<0-5>: Set timing template (higher is faster)}
@@ -102,7 +103,7 @@ From Amy,
 
 Jake please change your password. It is too weak and holt will be mad if someone hacks into the nine nine
 
-
+m0rn1ngstr@kali:~/THM/b99$ 
 {% endhighlight %}
 
 We logged in `ftp`, found a file called `note_to_jake.txt`, downloaded it, and then read. 
@@ -130,7 +131,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2020-07-26 06:50:
 [STATUS] 44.00 tries/min, 44 tries in 00:01h, 14344355 to do in 5433:29h, 4 active
 [22][ssh] host: 10.10.178.215   login: jake   password: [jakespass]
 1 of 1 target successfully completed, 1 valid password found
-Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2020-07-26 06:52:33
+
 
 {% endhighlight %}
 
@@ -186,9 +187,9 @@ Enjoy!!
 
 > "Oh, I've caused a problem. I think I am getting a text message. Bloop. Ah, there it is." - Captain Holt
 
-So we have holt's password too. 
+So we have Holt's password too. 
 
-##Gaining Shell and User flag
+## Gaining Shell and User flag
 
 Since we have two variants of accessing this machine, let's try both. Starting with Jake, cause we found his password first.
 
@@ -235,7 +236,7 @@ holt@brookly_nine_nine:~$ cat user.txt
 ## Privilege escalation and Root flag
 Here we also have two ways for `Privilege escalation`
 
-###Jake
+### Jake
 Let's check what command Jake can run with sudo
 {% highlight console %}
 jake@brookly_nine_nine:~$ sudo -l
