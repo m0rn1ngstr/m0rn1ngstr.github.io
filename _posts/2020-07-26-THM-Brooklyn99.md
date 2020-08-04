@@ -1,7 +1,7 @@
 ---
 title:  "TryHackMe - Brooklyn 99 writeup"
 header:
-  teaser: "/assets/images/b99/b99_prev.jpg"
+  teaser: "/assets/images/THM_logo.jpg"
 categories: 
   - TryHackMe
 tags:
