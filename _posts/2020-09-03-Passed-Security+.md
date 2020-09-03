@@ -29,6 +29,8 @@ And after two weeks, I decided to reflect on my study process and share some les
 
 *Let's start.*
 
+
+
 # My background.
 I started my preparation for the exam in my third year (out four) of the university. My specialization is "Systems of Information Security". 
 So I have some skills in the network, Windows and Linux, and some programming. Also, as it can be seen in my blog, I develop my ethical hacking skills using [Hack The Box](https://app.hackthebox.eu/profile/245662) and [TryHackMe]( https://tryhackme.com/p/m0rn1ngstr) platforms. But I have no enterprise experience. 
@@ -44,6 +46,8 @@ So I looked for entry-level security certification which has a wide range of top
 I had started my preparation before SY0-601 was announced. And when CompTIA gave news about the new version I almost finished my studies. So it was too late. 
 
 But I would advise passing SY0-501 while you still can (will be available up to July 2021), because study resources for 501 are already here and you can start right now when it would take some time for trainers to create it for 601. 
+
+
 
 # Preparation.
 
@@ -76,15 +80,17 @@ Then I bought Dion's practice tests in Udemy, which was highly recommended on Re
 
 During preparation, I took any chance to test my knowledge and study groups became a great opportunity for that. Study Group is a stream with two parts. First part is several questions written exam-like with then given explanations. Second part is Q&A. Most of the Study groups I watched recorded, so it has timestamps in every video, which is very useful.
 
-***Therefore, my final tips on preparation:***
-- Understand, not memorize
-- However, some ports you still need to remember. I created Quizlet flashcards for that.
-- Get familiar with logs.
-- Get yourself a primary and secondary study source.
-- For primary source take what really works for you: books/video course/etc.
-- Test yourself to find weak points, but do not overreact your mistakes, better work on them.
-- Take rest during preparation. It is not a sprint, but a marathon.
-- Read about other's experiences but always remember that everyone has a different background, some things might work for them might not work for you and vice versa.
+> ***Therefore, my final tips on preparation:***
+> - Understand, not memorize
+> - However, some ports you still need to remember. I created Quizlet flashcards for that.
+> - Get familiar with logs.
+> - Get yourself a primary and secondary study source.
+> - For primary source take what really works for you: books/video course/etc.
+> - Test yourself to find weak points, but do not overreact your mistakes, better work on them.
+> - Take rest during preparation. It is not a sprint, but a marathon.
+> - Read about other's experiences but always remember that everyone has a different background, some things might work for them might not work for you and vice versa.
+
+
 
 
 # The X-day
@@ -118,6 +124,8 @@ In total, I took my exam for about 60 minutes. Then completed the survey and aft
 <figure>
 	<a href="/assets/images/Security+/sec_score.jpg"><img src="/assets/images/Security+/sec_score.jpg"></a>
 </figure>
+
+
 
 *I hope it was helpful to you. If you have any additional questions about Security+ certification, feel free to tweet me [@m0rn1ngstr](https://twitter.com/m0rn1ngstr) *
 
