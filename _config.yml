@@ -20,7 +20,7 @@ title                    : "m0rn1ngstr"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "m0rn1ngstr"
-description              : "Some CTF writeups"
+description              : "My journey into cybersec"
 url                      : "https://m0rn1ngstr.github.io/" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -70,7 +70,7 @@ naver_site_verification  :
 
 # Social Sharing
 twitter:
-  username               :
+  username               : "@m0rn1ngstr"
 facebook:
   username               :
   app_id                 :
@@ -94,7 +94,7 @@ analytics:
 # Site Author
 author:
   name             : "m0rn1ngstr"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
+  avatar           : "/assets/images/eye.jpg"
   bio              : "Cybersecurity enthusiast. CTF Player"
   email            :
   links:
@@ -116,6 +116,9 @@ author:
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
       # url: "https://www.instagram.com/m0rn1ngstr/"
+    - label: "LinkedIn"
+      icon: "fas fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/katerina-shevchenko01/"
 
 # Site Footer
 footer:
