@@ -31,7 +31,7 @@ And after two weeks, I decided to reflect on my study process and share some les
 
 
 
-# My background.
+## My background.
 I started my preparation for the exam in my third year (out four) of the university. My specialization is "Systems of Information Security". 
 So I have some skills in the network, Windows and Linux, and some programming. Also, as it can be seen in my blog, I develop my ethical hacking skills using [Hack The Box](https://app.hackthebox.eu/profile/245662) and [TryHackMe]( https://tryhackme.com/p/m0rn1ngstr) platforms. But I have no enterprise experience. 
 
@@ -42,16 +42,16 @@ My specialization is pretty new in my country, so I felt that I had some missing
 
 So I looked for entry-level security certification which has a wide range of topics to create a solid base for my future knowledge and practice. Security+ was perfect for this goal. 
 
-## Why didn't I wait for SY0-601?
+### Why didn't I wait for SY0-601?
 I had started my preparation before SY0-601 was announced. And when CompTIA gave news about the new version I almost finished my studies. So it was too late. 
 
 But I would advise passing SY0-501 while you still can (will be available up to July 2021), because study resources for 501 are already here and you can start right now when it would take some time for trainers to create it for 601. 
 
 
 
-# Preparation.
+## Preparation.
 
-## Sources:
+### Sources
 After I picked the certification exam, I read some forums about Security+ and wrote down the most common mentioned study resources. 
 Then I looked them up and chose what will work best for me.
 
@@ -63,7 +63,7 @@ Then I looked them up and chose what will work best for me.
 - [Dion's practice tests](https://www.udemy.com/course/comptia-security-practice-exams/)
 
 
-### Study process.
+### Study process
 My total time of preparation for this exam was about two months studying about 3 hours a day. 
 
 **_BUT,_ the time needed for you may be different, it depends on your background and amount of spare time.**
@@ -93,9 +93,9 @@ During preparation, I took any chance to test my knowledge and study groups beca
 
 
 
-# The X-day
+## The X-day
 
-## Buying the voucher and scheduling the exam.
+### Buying the voucher and scheduling the exam.
 Firstly, I bought the voucher for the exam on the official CompTIA store. I  was hoping to receive a student discount, but sadly it is not available in my country. But I used a 10% discount from [CompTIA's IT Career News subscription](https://www.comptia.org/blog/voucher-discount).
 
 Then I created an account on PearsonVue, chose the exam, filled details, chose the testing center, and in the end, I entered my voucher number.
@@ -104,12 +104,12 @@ Done. My exam was scheduled.
 I was so happy that I decided to do that about a week before the exam because my first choice testing center closed for quarantine a day before I went scheduling the exam on PearsonVue. So I chose the next available.
 
 
-## Why did I choose to take an exam at the testing center?
+### Why did I choose to take an exam at the testing center?
 Well, it may not have been the best time for the certification exam with this pandemic, but I wanted to take a test before the start of my final year at the university. 
 CompTIA has or had (depends when you are reading) an option to take an exam at home. But I was not sure in my ISP, so not to worry I scheduled an exam at a local testing center. 
 
 
-## Exam process.
+### Exam process.
 I arrived at the place about 15 minutes earlier. The administrators of this testing center were very polite and nice, so I am glad that I chose this center. 
 
 First, they measured my temperature. Then was registration: they checked my ID and took my picture, I signed papers. 
@@ -127,6 +127,5 @@ In total, I took my exam for about 60 minutes. Then completed the survey and aft
 
 
 
-*I hope it was helpful to you. If you have any additional questions about Security+ certification, feel free to tweet me [@m0rn1ngstr](https://twitter.com/m0rn1ngstr) *
-
-*Good luck!*
+>I hope it was helpful to you. If you have any additional questions about Security+ certification, feel free to tweet me [@m0rn1ngstr](https://twitter.com/m0rn1ngstr)
+>Good luck!
