@@ -70,7 +70,7 @@ naver_site_verification  :
 
 # Social Sharing
 twitter:
-  username               : "@m0rn1ngstr"
+  username               : "m0rn1ngstr"
 facebook:
   username               :
   app_id                 :
@@ -117,7 +117,7 @@ author:
       icon: "fab fa-fw fa-instagram"
       # url: "https://www.instagram.com/m0rn1ngstr/"
     - label: "LinkedIn"
-      icon: "fas fa-fw fa-linkedin"
+      icon: "fab fa-linkedin"
       url: "https://www.linkedin.com/in/katerina-shevchenko01/"
 
 # Site Footer
