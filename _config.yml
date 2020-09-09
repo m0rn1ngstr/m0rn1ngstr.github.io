@@ -95,17 +95,17 @@ analytics:
 author:
   name             : "m0rn1ngstr"
   avatar           : "/assets/images/eye.jpg"
-  bio              : "Cybersecurity enthusiast. CTF Player"
+  bio              : "Cybersecurity student. CTF Player"
   email            :
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
       # url: "mailto:your.name@email.com"
     - label: "HackTheBox"
-      icon: "fas fa-fw fa-link"
+      icon: "far fa-flag"
       url: "https://www.hackthebox.eu/profile/245662"
     - label: "TryHackMe"
-      icon: "fas fa-fw fa-link"
+      icon: "far fa-flag"
       url: "https://tryhackme.com/p/m0rn1ngstr"
     - label: "Twitter"
       icon: "fab fa-fw fa-twitter-square"
