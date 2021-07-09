@@ -111,7 +111,7 @@ Following the steps of the previous module, Windows Fundamentals explains to you
 *At the end of the learning path, you will receive the certificate, which will look good on your LinkedIn or something like that.*
 
 <figure>
-	<a href="/assets/images/PreSecurity/cert.png"><img src="/assets/images/PreSecuritycert.png"></a>
+	<a href="/assets/images/PreSecurity/cert.png"><img src="/assets/images/PreSecurity/cert.png"></a>
 </figure>
 
 > I hope it was helpful to you. If you have any additional questions, feel free to tweet me [@m0rn1ngstr](https://twitter.com/m0rn1ngstr)
