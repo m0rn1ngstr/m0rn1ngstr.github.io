@@ -95,7 +95,7 @@ In this module, THM will explain to you how to use Linux from a completely fresh
 	<a href="/assets/images/PreSecurity/WindowsFundamentals.png"><img src="/assets/images/PreSecurity/WindowsFundamentals.png"></a>
 </figure>
 
-Following the steps of the previous module, Windows Fundamentals explains to you how to work your system outside the bubble of usual day-to-day use. In my opinion, this module gets more into security than the previous one. But this module does not include a video walkthrough, which will be cherry on top for new students. 
+Following the steps of the previous module, Windows Fundamentals explains to you how to work with your system outside the bubble of usual day-to-day use. In my opinion, this module gets more into security than the previous one. But this module does not include a video walkthrough, which will be cherry on top for new students. 
 
 <figure>
 	<a href="/assets/images/PreSecurity/WindowsFundamentals2.png"><img src="/assets/images/PreSecurity/WindowsFundamentals2.png"></a>
