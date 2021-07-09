@@ -49,9 +49,9 @@ The first module in form of the game tells you what is behind the hacking, which
 	<a href="/assets/images/PreSecurity/NetworkFundamentals.png"><img src="/assets/images/PreSecurity/NetworkFundamentals.png"></a>
 </figure>
 
-The next module explains the basics of network: what is the internet and how it works, how can be organized local network and what advantages and disadvantages each method has, what is OSI model and how is it a basis for all networking, and also some attacks and defends.
+The next module explains the basics of network: what is the internet and how it works, how can be organized local network and what advantages and disadvantages each method has, what is OSI model and how is it a basis for all networking, and also some methods of attacks and defends.
 
-I can stress enough how important knowledge about networks in any security activity, from CTF tasks to real-life assessments. Of course, this module won’t give you the necessary level of skills to become a pentester the next day, but it is a great start. Also, I advise you to take notes because there is a lot of information and it would be hard to remember it all. 
+I can't stress enough how important knowledge about networks in any security activity, from CTF tasks to real-life assessments. Of course, this module won’t give you the necessary level of skills to become a pentester the next day, but it is a great start. Also, I advise you to take notes because there is a lot of information and it would be hard to remember it all. 
 
 
 <figure>
