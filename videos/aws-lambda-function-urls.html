@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- UPDATE: title, description, og:title, og:description for each video -->
+  <title>AWS Lambda Function URLs as a Pentester — m0rn1ngstr</title>
+  <meta name="description" content="How misconfigured AWS Lambda Function URLs can lead to unauthenticated code execution in a target's cloud environment." />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    .cmd-block { background:var(--surface); border:0.5px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:12px; }
+    .cmd-header { display:flex; justify-content:space-between; align-items:center; padding:7px 14px; border-bottom:0.5px solid var(--border); background:var(--surface2); }
+    .cmd-label { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); }
+    .cmd-copy { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--mint); background:none; border:none; cursor:pointer; opacity:0.7; letter-spacing:0.5px; }
+    .cmd-copy:hover { opacity:1; }
+    .cmd-body { padding:12px 14px; font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.7; color:var(--mint); overflow-x:auto; white-space:pre; }
+    .cmd-comment { color:var(--text-muted); }
+    .ts-list { list-style:none; }
+    .ts-list li { display:flex; gap:12px; align-items:baseline; padding:8px 0; border-bottom:0.5px solid var(--border); font-size:13px; }
+    .ts-list li:last-child { border-bottom:none; }
+    .ts-time { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); min-width:40px; flex-shrink:0; }
+    .lab-card { background:var(--surface); border:0.5px solid var(--border); border-radius:8px; padding:10px 12px; margin-bottom:7px; text-decoration:none; display:block; transition:border-color 0.2s; }
+    .lab-card:hover { border-color:var(--red); }
+    .res-link { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:6px; border:0.5px solid var(--border); margin-bottom:6px; text-decoration:none; transition:border-color 0.2s; background:var(--surface); }
+    .res-link:hover { border-color:var(--purple); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">m0rn1ngstr<span>.</span></a>
+  <div class="nav-links">
+    <a href="../about.html">about</a>
+    <a href="../videos.html" class="active">videos</a>
+    <a href="../work.html">work</a>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div style="padding:0.9rem 2rem; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); border-bottom:0.5px solid var(--border); display:flex; align-items:center; gap:8px;">
+  <a href="../index.html" style="color:var(--text-muted); text-decoration:none;">home</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <a href="../videos.html" style="color:var(--text-muted); text-decoration:none;">videos</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <!-- UPDATE: slug -->
+  <span style="color:var(--text);">aws-lambda-function-urls</span>
+</div>
+
+<!-- TWO-COLUMN LAYOUT -->
+<div style="max-width:1060px; margin:0 auto; display:grid; grid-template-columns:1fr 280px; gap:0;">
+
+  <!-- MAIN -->
+  <main style="padding:2.5rem 2rem; border-right:0.5px solid var(--border);">
+
+    <!-- META TAGS — UPDATE these for each video -->
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:1rem;">
+      <span class="badge badge-hof" style="font-size:11px; padding:4px 10px;">AWS</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">Cloud Offensive</span>
+      <span class="badge badge-purple" style="font-size:11px; padding:4px 10px;">Red Team</span>
+    </div>
+
+    <!-- UPDATE: title, date -->
+    <h1 style="font-size:1.6rem; font-weight:300; line-height:1.2; letter-spacing:-0.5px; margin-bottom:0.4rem;">Breaking Down AWS Lambda Function URLs as a Pentester</h1>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted); margin-bottom:1.5rem;">// published · 2025-03-14</div>
+
+    <!-- VIDEO EMBED — UPDATE: replace YOUTUBE_VIDEO_ID -->
+    <a href="https://www.youtube.com/watch?v=gbvrplPAPAI" target="_blank"
+    style="display:block; width:100%; aspect-ratio:16/9; margin-bottom:2rem; border-radius:8px; overflow:hidden; border:0.5px solid var(--border); position:relative; text-decoration:none;">
+      <img src="https://img.youtube.com/vi/gbvrplPAPAI/maxresdefault.jpg"
+            alt="TryHackMe Advent of Cyber 2025 Day 23 S3cret Santa"
+            style="width:100%; height:100%; object-fit:cover; display:block;">
+      <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);">
+        <div style="width:64px; height:64px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center;">
+          <i class="ti ti-player-play" style="color:#fff; font-size:24px; margin-left:3px;"></i>
+        </div>
+      </div>
+    </a>
+
+    <!-- OVERVIEW — UPDATE -->
+    <div class="section-head">overview</div>
+    <p style="font-size:14px; line-height:1.75; color:var(--text-muted); margin-bottom:2.5rem;">
+      AWS Lambda Function URLs introduce a <strong style="color:var(--text); font-weight:500;">direct HTTP endpoint</strong> for your Lambda functions — no API Gateway required.
+      From a pentester's perspective, this creates a new and often overlooked attack surface.
+      We walk through how Function URLs work, how to discover them during recon, and how
+      <strong style="color:var(--text); font-weight:500;">misconfigured auth modes</strong> (NONE vs AWS_IAM) can lead to unauthenticated code execution.
+    </p>
+
+    <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+    <!-- TIMESTAMPS — UPDATE -->
+    <div class="section-head">timestamps</div>
+    <ul class="ts-list" style="margin-bottom:2.5rem;">
+      <li><span class="ts-time">00:00</span><span style="color:var(--text-muted);">Intro — what are Lambda Function URLs?</span></li>
+      <li><span class="ts-time">00:57</span><span style="color:var(--text-muted);">AWS Lambda and Lambda Function URLs explained</span></li>
+      <li><span class="ts-time">01:56</span><span style="color:var(--text-muted);">Enumeration cases</span></li>
+      <li><span class="ts-time">03:15</span><span style="color:var(--text-muted);">CloudFoxable</span></li>
+      <li><span class="ts-time">03:48</span><span style="color:var(--text-muted);">Furls1 (manual)</span></li>
+      <li><span class="ts-time">06:39</span><span style="color:var(--text-muted);">Furls1 (automation - cloudfox)</span></li>
+      <li><span class="ts-time">08:28</span><span style="color:var(--text-muted);">Furls2 (manual)</span></li>
+      <li><span class="ts-time">11:27</span><span style="color:var(--text-muted);">Furls2 (automation - cloudfox)</span></li>
+      <li><span class="ts-time">12:15</span><span style="color:var(--text-muted);">Conclusions and outro</span></li>
+    </ul>
+
+    <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+    <!-- COMMANDS — UPDATE / ADD MORE BLOCKS AS NEEDED -->
+    <div class="section-head">commands used</div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">list all lambda functions in the account</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `aws --profile cloudfoxable lambda list-functions`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># reveals function names, runtimes, and assigned IAM roles</span>
+    aws --profile cloudfoxable lambda list-functions</div>
+    </div>
+    
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">get configuration of a specific function</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `aws --profile cloudfoxable lambda get-function-configuration --function-name furls1`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># returns runtime, env vars, IAM role, VPC config, and timeout</span>
+    aws --profile cloudfoxable lambda get-function-configuration \
+      --function-name furls1</div>
+    </div>
+    
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">check if a function url is attached</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `aws --profile cloudfoxable lambda list-function-url-configs --function-name furls1`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># AuthType: NONE = publicly accessible, AWS_IAM = requires signed requests</span>
+    aws --profile cloudfoxable lambda list-function-url-configs \
+      --function-name furls1</div>
+    </div>
+    
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">cloudfox — available modules</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `cloudfox aws -h`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># list all CloudFox modules for AWS enumeration</span>
+    cloudfox aws -h</div>
+    </div>
+    
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">cloudfox — enumerate lambda functions</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `cloudfox aws lambda -p cloudfoxable --outdir .`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># outputs function names, roles, and any attached Function URLs</span>
+    cloudfox aws lambda -p cloudfoxable --outdir .</div>
+    </div>
+    
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">cloudfox — scan for exposed endpoints</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `cloudfox aws endpoints -p cloudfoxable --outdir .`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># finds all exposed endpoints across services, including Function URLs</span>
+    cloudfox aws endpoints -p cloudfoxable --outdir .</div>
+    </div>
+    
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">list functions again — find additional targets</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `aws --profile cloudfoxable lambda list-functions`)">copy</button>
+      </div>
+      <div class="cmd-body">aws --profile cloudfoxable lambda list-functions</div>
+    </div>
+    
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">inspect second function — check for hardcoded secrets</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `aws --profile cloudfoxable lambda get-function-configuration --function-name auth-me`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># hardcoded secrets in env vars are a common misconfiguration — check carefully</span>
+    aws --profile cloudfoxable lambda get-function-configuration \
+      --function-name auth-me</div>
+    </div>
+    
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">check if auth-me has a function url attached</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `aws --profile cloudfoxable lambda list-function-url-configs --function-name auth-me`)">copy</button>
+      </div>
+      <div class="cmd-body">aws --profile cloudfoxable lambda list-function-url-configs \
+      --function-name auth-me</div>
+    </div>
+    
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">cloudfox — extract env vars across all services</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `cloudfox aws env-vars -p cloudfoxable --outdir .`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># scans Lambda, ECS, EC2 and more — surfaces API keys, DB strings, secrets in one pass</span>
+    cloudfox aws env-vars -p cloudfoxable --outdir .</div>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside style="padding:2.5rem 1.5rem;">
+
+    <!-- LABS — UPDATE -->
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">labs to practice</div>
+      <a href="https://cloudfoxable.bishopfox.com/challenges" target="_blank" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">CloudFoxable</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Furls 1 and Furls 2</div>
+      </a>
+      <a href="https://pathfinding.cloud/labs/public-lambda-with-admin" target="_blank" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">Pathfinding.cloud</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Public Lambda with Admin Role to Admin</div>
+      </a>
+    </div>
+
+    <!-- RESOURCES — UPDATE -->
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">resources</div>
+      <a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-urls.html" target="_blank" class="res-link">
+        <i class="ti ti-file-text" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">AWS Lambda URL docs</div>
+          <div style="font-size:11px; color:var(--text-muted);">docs.aws.amazon.com</div>
+        </div>
+      </a>
+      <a href="https://github.com/BishopFox/cloudfox" target="_blank" class="res-link">
+        <i class="ti ti-tool" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">CloudFox</div>
+          <div style="font-size:11px; color:var(--text-muted);">github.com/BishopFox</div>
+        </div>
+      </a>
+      <a href="https://cloud.hacktricks.wiki/en/pentesting-cloud/aws-security/index.html" target="_blank" class="res-link">
+        <i class="ti ti-book" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">HackTricks — AWS</div>
+          <div style="font-size:11px; color:var(--text-muted);">cloud.hacktricks.wiki</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- RELEVANT CERTS — UPDATE -->
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">relevant certs</div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <span class="cert-pill">ARTE</span>
+      </div>
+    </div>
+
+    <!-- MORE VIDEOS — UPDATE hrefs and titles -->
+    <div>
+      <div class="section-head">more videos</div>
+      <a href="thm-aoc-2025.html" class="card" style="display:flex; gap:10px; align-items:flex-start; padding:10px; text-decoration:none; margin-bottom:7px;">
+        <div style="width:52px; height:36px; border-radius:4px; overflow:hidden; flex-shrink:0;">
+          <img src="https://img.youtube.com/vi/REyPZiWrO0c/mqdefault.jpg"
+               style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--red); letter-spacing:1px; text-transform:uppercase;">AWS · Cloud · THM</div>
+          <div style="font-size:11px; font-weight:500; color:var(--text); line-height:1.35; margin-top:2px;">TryHackMe Advent of Cyber 2025 Day 23 | S3cret Santa</div>
+        </div>
+      </a>
+    </div>
+
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://youtube.com/@m0rn1ngstr" target="_blank"><i class="ti ti-brand-youtube"></i> YouTube</a>
+    <a href="https://x.com/m0rn1ngstr" target="_blank"><i class="ti ti-brand-x"></i> X</a>
+    <a href="https://www.linkedin.com/in/katerina-shevchenko01/" target="_blank"><i class="ti ti-brand-linkedin"></i> LinkedIn</a>
+  </div>
+  <span>// hello, friend. &copy; 2026 m0rn1ngstr</span>
+</footer>
+
+<script>
+  function copyCmd(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'copied!';
+      setTimeout(() => btn.textContent = orig, 1500);
+    });
+  }
+</script>
+
+</body>
+</html>

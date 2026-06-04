@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certified Red Team Operator | CRTO — Review — m0rn1ngstr</title>
+  <meta name="description" content="Honest review of the CRTO certification from Zero-Point Security — course, lab, exam, and whether it's worth it." />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    .ts-list { list-style:none; }
+    .ts-list li { display:flex; gap:12px; align-items:baseline; padding:8px 0; border-bottom:0.5px solid var(--border); font-size:13px; }
+    .ts-list li:last-child { border-bottom:none; }
+    .ts-time { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); min-width:40px; flex-shrink:0; }
+    .res-link { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:6px; border:0.5px solid var(--border); margin-bottom:6px; text-decoration:none; transition:border-color 0.2s; background:var(--surface); }
+    .res-link:hover { border-color:var(--purple); }
+    a.card, a.card:visited { color:var(--text); }
+    .verdict-card {
+      background:var(--surface); border:0.5px solid var(--border);
+      border-radius:8px; padding:1.2rem 1.4rem; margin-bottom:10px;
+    }
+    .verdict-label {
+      font-family:'JetBrains Mono',monospace; font-size:10px;
+      color:var(--red); letter-spacing:1px; text-transform:uppercase;
+      margin-bottom:6px;
+    }
+    .verdict-text { font-size:13px; color:var(--text-muted); line-height:1.65; }
+    .verdict-text strong { color:var(--text); font-weight:500; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">m0rn1ngstr<span>.</span></a>
+  <div class="nav-links">
+    <a href="../about.html">about</a>
+    <a href="../videos.html" class="active">videos</a>
+    <a href="../work.html">work</a>
+  </div>
+</nav>
+
+<div style="padding:0.9rem 2rem; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); border-bottom:0.5px solid var(--border); display:flex; align-items:center; gap:8px;">
+  <a href="../index.html" style="color:var(--text-muted); text-decoration:none;">home</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <a href="../videos.html" style="color:var(--text-muted); text-decoration:none;">videos</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <span style="color:var(--text);">crto-review</span>
+</div>
+
+<div style="max-width:1060px; margin:0 auto; display:grid; grid-template-columns:1fr 280px; gap:0;">
+
+  <!-- MAIN -->
+  <main style="padding:2.5rem 2rem; border-right:0.5px solid var(--border);">
+
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:1rem;">
+      <span class="badge badge-hof" style="font-size:11px; padding:4px 10px;">Certification</span>
+      <span class="badge badge-purple" style="font-size:11px; padding:4px 10px;">Red Team</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">Review</span>
+    </div>
+
+    <h1 style="font-size:1.6rem; font-weight:300; line-height:1.2; letter-spacing:-0.5px; margin-bottom:0.4rem;">Certified Red Team Operator | CRTO — Review</h1>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted); margin-bottom:1.5rem;">// Zero-Point Security</div>
+
+    <!-- VIDEO THUMBNAIL -->
+    <a href="https://www.youtube.com/watch?v=Mb-lUgCVmOY" target="_blank"
+       style="display:block; width:100%; aspect-ratio:16/9; margin-bottom:2rem; border-radius:8px; overflow:hidden; border:0.5px solid var(--border); position:relative; text-decoration:none;">
+      <img src="https://img.youtube.com/vi/Mb-lUgCVmOY/maxresdefault.jpg"
+           alt="CRTO Review"
+           style="width:100%; height:100%; object-fit:cover; display:block;">
+      <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);">
+        <div style="width:64px; height:64px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center;">
+          <i class="ti ti-player-play" style="color:#fff; font-size:24px; margin-left:3px;"></i>
+        </div>
+      </div>
+    </a>
+
+    <div class="section-head">overview</div>
+    <p style="font-size:14px; line-height:1.75; color:var(--text-muted); margin-bottom:2.5rem;">
+      An honest review of the <strong style="color:var(--text); font-weight:500;">CRTO (Certified Red Team Operator)</strong>
+      certification from Zero-Point Security. Covers the course content,
+      lab environment, exam format, and whether it's worth pursuing —
+      especially if you're already holding an OSCP and looking for
+      a deeper dive into <strong style="color:var(--text); font-weight:500;">red team operations and C2 tradecraft</strong>.
+    </p>
+
+    <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+    <!-- TIMESTAMPS -->
+    <div class="section-head">timestamps</div>
+    <ul class="ts-list" style="margin-bottom:2.5rem;">
+      <li><span class="ts-time">00:00</span><span style="color:var(--text-muted);">Intro</span></li>
+      <li><span class="ts-time">00:26</span><span style="color:var(--text-muted);">Description — what CRTO is and who it's for</span></li>
+      <li><span class="ts-time">00:56</span><span style="color:var(--text-muted);">Background — my experience before taking it</span></li>
+      <li><span class="ts-time">02:07</span><span style="color:var(--text-muted);">Packages — pricing and access options</span></li>
+      <li><span class="ts-time">02:34</span><span style="color:var(--text-muted);">Course — content, structure, and depth</span></li>
+      <li><span class="ts-time">03:54</span><span style="color:var(--text-muted);">Lab — environment, tools, and Cobalt Strike access</span></li>
+      <li><span class="ts-time">05:54</span><span style="color:var(--text-muted);">Exam — format, duration, and what to expect</span></li>
+      <li><span class="ts-time">08:47</span><span style="color:var(--text-muted);">Conclusion — verdict and who should take it</span></li>
+      <li><span class="ts-time">09:45</span><span style="color:var(--text-muted);">Outro</span></li>
+    </ul>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside style="padding:2.5rem 1.5rem;">
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">links</div>
+      <a href="https://training.zeropointsecurity.co.uk/courses/red-team-ops" target="_blank" class="res-link">
+        <i class="ti ti-certificate" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">CRTO — Red Team Ops</div>
+          <div style="font-size:11px; color:var(--text-muted);">training.zeropointsecurity.co.uk</div>
+        </div>
+      </a>
+      <a href="https://eu.badgr.com/public/assertions/GXGVI9ZrTKmuZl7LjTnoQg" target="_blank" class="res-link">
+        <i class="ti ti-medal" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">My CRTO badge</div>
+          <div style="font-size:11px; color:var(--text-muted);">eu.badgr.com</div>
+        </div>
+      </a>
+      <a href="https://twitter.com/0xBoku/status/1437067178025623561" target="_blank" class="res-link">
+        <i class="ti ti-brand-x" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">Cert comparison thread</div>
+          <div style="font-size:11px; color:var(--text-muted);">@0xBoku</div>
+        </div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">relevant certs</div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <span class="cert-pill">CRTO</span>
+        <span class="cert-pill">OSCP</span>
+        <span class="cert-pill">OSEP</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-head">more videos</div>
+      <a href="kerberos-attacks-part1.html" class="card" style="display:flex; gap:10px; align-items:flex-start; padding:10px; text-decoration:none; margin-bottom:7px;">
+        <div style="width:52px; height:36px; border-radius:4px; overflow:hidden; flex-shrink:0;">
+          <img src="https://img.youtube.com/vi/U1nMgb8AEB4/mqdefault.jpg"
+               style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--red); letter-spacing:1px; text-transform:uppercase;">Active Directory · Kerberos</div>
+          <div style="font-size:11px; font-weight:500; color:var(--text); line-height:1.35; margin-top:2px;">Kerberos Attacks: User Enumeration, Kerberoasting and AS-REP Roasting</div>
+        </div>
+      </a>
+    </div>
+
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://youtube.com/@m0rn1ngstr" target="_blank"><i class="ti ti-brand-youtube"></i> YouTube</a>
+    <a href="https://x.com/m0rn1ngstr" target="_blank"><i class="ti ti-brand-x"></i> X</a>
+    <a href="https://www.linkedin.com/in/katerina-shevchenko01/" target="_blank"><i class="ti ti-brand-linkedin"></i> LinkedIn</a>
+  </div>
+  <span>// hello, friend. &copy; 2026 m0rn1ngstr</span>
+</footer>
+
+</body>
+</html>

