@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /assets/
+
+Sitemap: https://m0rn1ngstr.github.io/sitemap.xml
