@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9PBD5KP569"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9PBD5KP569');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Requiem for the Decommissioned: When Dead Hosts Bite Back — RTV DEF CON 34 — m0rn1ngstr</title>
+  <meta name="description" content="DEF CON 34 Red Team Village workshop. Finding forgotten, decommissioned hosts by measuring drift from an organization's own norm. By m0rn1ngstr." />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    .res-link { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:6px; border:0.5px solid var(--border); margin-bottom:6px; text-decoration:none; transition:border-color 0.2s; background:var(--surface); }
+    .res-link:hover { border-color:var(--purple); }
+    a.card, a.card:visited { color:var(--text); }
+    .method-step {
+      display:grid; grid-template-columns:auto 1fr; gap:14px;
+      padding:14px 0; border-bottom:0.5px solid var(--border);
+    }
+    .method-step:last-child { border-bottom:none; }
+    .method-num {
+      font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:500;
+      color:var(--red); background:var(--red-dim); border:0.5px solid var(--red-border);
+      width:28px; height:28px; border-radius:6px;
+      display:flex; align-items:center; justify-content:center; flex-shrink:0;
+    }
+    .method-title { font-size:14px; font-weight:500; color:var(--text); margin-bottom:2px; }
+    .method-desc { font-size:12px; color:var(--text-muted); line-height:1.5; }
+    .flip-quote {
+      background:var(--surface); border:0.5px solid var(--border);
+      border-left:2px solid var(--red); border-radius:6px;
+      padding:1rem 1.3rem; margin:1.5rem 0; font-size:14px; line-height:1.7; color:var(--text-muted);
+    }
+    .flip-quote strong { color:var(--text); font-weight:500; }
+    .event-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:'JetBrains Mono',monospace; font-size:11px;
+      color:var(--red); background:var(--red-dim); border:0.5px solid var(--red-border);
+      padding:5px 12px; border-radius:5px; letter-spacing:0.5px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">m0rn1ngstr<span>.</span></a>
+  <div class="nav-links">
+    <a href="../about.html">about</a>
+    <a href="../videos.html">videos</a>
+    <a href="../talks.html" class="active">talks &amp; media</a>
+    <a href="../work.html">work</a>
+  </div>
+</nav>
+
+<div style="padding:0.9rem 2rem; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); border-bottom:0.5px solid var(--border); display:flex; align-items:center; gap:8px;">
+  <a href="../index.html" style="color:var(--text-muted); text-decoration:none;">home</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <a href="../talks.html" style="color:var(--text-muted); text-decoration:none;">talks &amp; media</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <span style="color:var(--text);">requiem-for-the-decommissioned</span>
+</div>
+
+<div style="max-width:1060px; margin:0 auto; display:grid; grid-template-columns:1fr 280px; gap:0;">
+
+  <!-- MAIN -->
+  <main style="padding:2.5rem 2rem; border-right:0.5px solid var(--border);">
+
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:1rem;">
+      <span class="event-badge"><i class="ti ti-microphone" style="font-size:12px;"></i> DEF CON 34</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">Red Team Village</span>
+      <span class="badge badge-purple" style="font-size:11px; padding:4px 10px;">Workshop + Tactic</span>
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:300; line-height:1.2; letter-spacing:-0.5px; margin-bottom:0.4rem;">Requiem for the Decommissioned: When Dead Hosts Bite Back</h1>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted); margin-bottom:2rem;">// Red Team Village · DEF CON 34 · Aug 8, 2026</div>
+
+    <div class="section-head">the talk</div>
+    <p style="font-size:14px; line-height:1.8; color:var(--text-muted); margin-bottom:1rem;">
+      Every organization has a graveyard: hosts decommissioned after a migration, abandoned when a project died,
+      or dropped from inventory after a reorg. Off the asset list, out of the patch cycle, out of mind,
+      and still on the network.
+    </p>
+
+    <div class="flip-quote">
+      This talk flips the usual angle. Instead of <em>"this host is vulnerable because it's outdated,"</em>
+      it asks <em>"this host is outdated, so it's probably worth a closer look."</em>
+      <br><br>
+      <strong>Abandonment isn't the excuse you write in a report; it's the lead you start from.</strong>
+    </div>
+
+    <p style="font-size:14px; line-height:1.8; color:var(--text-muted); margin-bottom:2.5rem;">
+      A forgotten host is frozen in time, everything around it moved on, and it didn't. The tell isn't
+      one bad setting; it's drift from the organization's <strong style="color:var(--text); font-weight:500;">own norm</strong>,
+      on several axes at once. So you don't compare a host to best practice. You compare it to its own family.
+    </p>
+
+    <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+    <div class="section-head">the method</div>
+    <div style="margin-bottom:1rem;">
+      <div class="method-step">
+        <div class="method-num">1</div>
+        <div>
+          <div class="method-title">Enumerate, quietly</div>
+          <div class="method-desc">Certificate Transparency (crt.sh). Zero packets to them.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num">2</div>
+        <div>
+          <div class="method-title">Learn what healthy looks like here</div>
+          <div class="method-desc">The org's usual TLS, headers, year, certificate org name.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num">3</div>
+        <div>
+          <div class="method-title">Measure drift</div>
+          <div class="method-desc">Time · wrong identity · below-norm posture · left exposed.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num">4</div>
+        <div>
+          <div class="method-title">Correlate</div>
+          <div class="method-desc">One weak signal is noise; several at once is a lead.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num">5</div>
+        <div>
+          <div class="method-title">Look at it</div>
+          <div class="method-desc">A screenshot catches what metadata can't.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num">6</div>
+        <div>
+          <div class="method-title">Prioritize, then explain</div>
+          <div class="method-desc">The tool ranks; you decide.</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside style="padding:2.5rem 1.5rem;">
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">the tool</div>
+      <a href="https://github.com/m0rn1ngstr/requiem" target="_blank" class="res-link">
+        <i class="ti ti-brand-github" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">requiem</div>
+          <div style="font-size:11px; color:var(--text-muted);">a differ, not a scanner</div>
+        </div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">tactic materials</div>
+      <a href="https://github.com/m0rn1ngstr/rtv-dc34-hunting-the-decommissioned" target="_blank" class="res-link">
+        <i class="ti ti-folder" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">Lab & results</div>
+          <div style="font-size:11px; color:var(--text-muted);">host list, pre-generated results</div>
+        </div>
+      </a>
+      <a href="https://github.com/m0rn1ngstr/rtv-dc34-hunting-the-decommissioned/blob/main/handout/hunting-the-decommissioned-onepager.pdf" target="_blank" class="res-link">
+        <i class="ti ti-file-text" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">One-page handout</div>
+          <div style="font-size:11px; color:var(--text-muted);">the method on one page (PDF)</div>
+        </div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">event</div>
+      <a href="https://redteamvillage.io/" target="_blank" class="res-link">
+        <i class="ti ti-external-link" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">Red Team Village</div>
+          <div style="font-size:11px; color:var(--text-muted);">redteamvillage.io</div>
+        </div>
+      </a>
+    </div>
+
+    <div>
+      <div class="section-head">relevant certs</div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <span class="cert-pill">OSCP</span>
+        <span class="cert-pill">OSEP</span>
+        <span class="cert-pill">CRTO</span>
+        <span class="cert-pill">ARTE</span>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://youtube.com/@m0rn1ngstr" target="_blank"><i class="ti ti-brand-youtube"></i> YouTube</a>
+    <a href="https://x.com/m0rn1ngstr" target="_blank"><i class="ti ti-brand-x"></i> X</a>
+    <a href="https://www.linkedin.com/in/katerina-shevchenko01/" target="_blank"><i class="ti ti-brand-linkedin"></i> LinkedIn</a>
+  </div>
+  <span>// hello, friend. &copy; 2026 m0rn1ngstr</span>
+</footer>
+
+</body>
+</html>
