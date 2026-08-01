@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9PBD5KP569"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9PBD5KP569');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Talks — m0rn1ngstr</title>
+  <meta name="description" content="Conference talks and workshops by Yekaterina Shevchenko (m0rn1ngstr) — DEF CON, GISEC, KazHackStan, AppSecFest." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    a.talk-card, a.talk-card:visited { color:var(--text); }
+    .talk-card {
+      display:block; text-decoration:none;
+      background:var(--surface); border:0.5px solid var(--border);
+      border-radius:10px; padding:1.4rem 1.6rem; margin-bottom:12px;
+      transition:border-color 0.2s;
+    }
+    .talk-card:hover { border-color:var(--red); }
+    .talk-card.featured { border-color:var(--red-border); }
+    .event-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      font-family:'JetBrains Mono',monospace; font-size:11px;
+      color:var(--red); background:var(--red-dim); border:0.5px solid var(--red-border);
+      padding:4px 10px; border-radius:5px; letter-spacing:0.5px;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">m0rn1ngstr<span>.</span></a>
+  <div class="nav-links">
+    <a href="about.html">about</a>
+    <a href="videos.html">videos</a>
+    <a href="talks.html" class="active">talks &amp; media</a>
+    <a href="work.html">work</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="page-tag">conferences · workshops · media</div>
+  <h1 class="page-title">Talks &amp; media</h1>
+  <p style="font-size:14px; color:var(--text-muted); line-height:1.8; max-width:580px; margin-bottom:3rem;">
+    Speaking at security conferences on offensive security, red team operations, and attacker methodology,
+    plus podcast interviews and press coverage.
+  </p>
+
+  <!-- UPCOMING -->
+  <div class="section-head">upcoming</div>
+
+  <a href="https://gisec.ae/" target="_blank" class="talk-card featured">
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+      <span class="event-badge"><i class="ti ti-microphone" style="font-size:12px;"></i> GISEC Global</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">Dubai</span>
+    </div>
+    <div style="font-size:1.15rem; font-weight:500; color:var(--text); line-height:1.3; margin-bottom:6px;">Speaker — GISEC Global 2026</div>
+    <div style="font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:10px;">
+      One of the largest cybersecurity events in the Middle East and Africa. Talk details to be announced.
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red);">2026 · Dubai →</div>
+  </a>
+
+  <a href="talks/requiem-for-the-decommissioned.html" class="talk-card featured">
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+      <span class="event-badge"><i class="ti ti-microphone" style="font-size:12px;"></i> DEF CON 34</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">Red Team Village</span>
+      <span class="badge badge-purple" style="font-size:11px; padding:4px 10px;">Workshop + Tactic</span>
+    </div>
+    <div style="font-size:1.15rem; font-weight:500; color:var(--text); line-height:1.3; margin-bottom:6px;">Requiem for the Decommissioned: When Dead Hosts Bite Back</div>
+    <div style="font-size:13px; color:var(--text-muted); line-height:1.6; margin-bottom:10px;">
+      Finding forgotten, decommissioned hosts by measuring drift from an organization's own norm.
+      Abandonment isn't the excuse you write in a report; it's the lead you start from.
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red);">2026 · Las Vegas →</div>
+  </a>
+
+  <div class="divider"></div>
+
+  <!-- PAST -->
+  <div class="section-head">past</div>
+
+  <div class="talk-card" style="cursor:default;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;">
+      <div>
+        <div style="font-size:14px; font-weight:500; color:var(--text); margin-bottom:3px;">When Social Engineering Fails</div>
+        <div style="font-size:12px; color:var(--text-muted);">Online event · no recording</div>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); flex-shrink:0;">2025</span>
+    </div>
+  </div>
+
+  <a href="https://www.youtube.com/live/qFyUNHEnqgw?t=22530" target="_blank" class="talk-card">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;">
+      <div>
+        <div style="font-size:14px; font-weight:500; color:var(--text); margin-bottom:3px;">AppSecFest 2025</div>
+        <div style="font-size:12px; color:var(--text-muted);">Application security conference · talk recording available</div>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); flex-shrink:0;">2025</span>
+    </div>
+  </a>
+
+  <a href="https://www.youtube.com/watch?v=8vIOWL2338I" target="_blank" class="talk-card">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;">
+      <div>
+        <div style="font-size:14px; font-weight:500; color:var(--text); margin-bottom:3px;">KazHackStan 2024</div>
+        <div style="font-size:12px; color:var(--text-muted);">Central Asia's largest cybersecurity conference · talk recording available</div>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); flex-shrink:0;">2024</span>
+    </div>
+  </a>
+
+  <a href="https://www.youtube.com/watch?v=UgeIu41NWJY" target="_blank" class="talk-card">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;">
+      <div>
+        <div style="font-size:14px; font-weight:500; color:var(--text); margin-bottom:3px;">Women in Cybersecurity webinar</div>
+        <div style="font-size:12px; color:var(--text-muted);">Community webinar · recording available</div>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); flex-shrink:0;">2024</span>
+    </div>
+  </a>
+
+  <div class="divider"></div>
+
+  <!-- MEDIA -->
+  <div class="section-head">media</div>
+
+  <a href="https://www.youtube.com/watch?v=DsUqnWpDjbw" target="_blank" class="talk-card">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;">
+      <div style="display:flex; align-items:flex-start; gap:10px;">
+        <i class="ti ti-microphone" style="font-size:16px; color:var(--purple); margin-top:2px; flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:14px; font-weight:500; color:var(--text); margin-bottom:3px;">Interview — Covert Access Team Podcast</div>
+          <div style="font-size:12px; color:var(--text-muted);">Guest interview on offensive security and my path into the field</div>
+        </div>
+      </div>
+      <span style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); flex-shrink:0;">2026</span>
+    </div>
+  </a>
+
+  <div style="height:1.5rem;"></div>
+
+  <!-- AS FEATURED IN -->
+  <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); letter-spacing:1px; margin-bottom:1rem;">// as featured in</div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(185px,1fr)); gap:10px;">
+    <a href="https://medium.com/epic-women-in-cyber/epic-women-in-cyber-katerina-shevchenko-7d5756a0fd6a" target="_blank" class="card" style="display:block; padding:0.9rem 1rem; text-decoration:none;">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">Epic Women in Cyber</div>
+      <div style="font-size:12px; font-weight:500; line-height:1.4; margin-bottom:4px;">Epic Women in Cyber - Katerina Shevchenko</div>
+      <div style="font-size:10px; color:var(--text-muted);">English · Medium</div>
+      <div style="font-size:11px; color:var(--text-muted); margin-top:6px;"><i class="ti ti-external-link" style="font-size:11px;"></i> Read</div>
+    </a>
+    <a href="https://cabar.asia/en/how-white-hat-institute-works-in-kazakhstan" target="_blank" class="card" style="display:block; padding:0.9rem 1rem; text-decoration:none;">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">CABAR.asia</div>
+      <div style="font-size:12px; font-weight:500; line-height:1.4; margin-bottom:4px;">How White Hat Institute Works in Kazakhstan</div>
+      <div style="font-size:10px; color:var(--text-muted);">English</div>
+      <div style="font-size:11px; color:var(--text-muted); margin-top:6px;"><i class="ti ti-external-link" style="font-size:11px;"></i> Read</div>
+    </a>
+    <a href="https://the-steppe.com/lyudi/pervaya-sertificirovannaya-oscp-devushka-pentester-v-centralnoy-azii-o-stereotipah-v-it-kiberatakah-i-informacionnoy-bezopasnosti" target="_blank" class="card" style="display:block; padding:0.9rem 1rem; text-decoration:none;">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">The Steppe</div>
+      <div style="font-size:12px; font-weight:500; line-height:1.4; margin-bottom:4px;">The First OSCP-Certified Female Penetration Tester in Central Asia on IT Stereotypes, Cyberattacks, and Information Security</div>
+      <div style="font-size:10px; color:var(--text-muted);">Russian</div>
+      <div style="font-size:11px; color:var(--text-muted); margin-top:6px;"><i class="ti ti-external-link" style="font-size:11px;"></i> Read</div>
+    </a>
+    <a href="https://weproject.media/articles/detail/ya-etichnyy-khaker-pervaya-devushka-v-tsentralnoy-azii-s-mezhdunarodnym-sertifikatom-oscp-o-svoey-ra/" target="_blank" class="card" style="display:block; padding:0.9rem 1rem; text-decoration:none;">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">WeProject Media</div>
+      <div style="font-size:12px; font-weight:500; line-height:1.4; margin-bottom:4px;">I Am an Ethical Hacker: The First Woman in Central Asia with an International OSCP Certification Talks About Her Work</div>
+      <div style="font-size:10px; color:var(--text-muted);">Russian</div>
+      <div style="font-size:11px; color:var(--text-muted); margin-top:6px;"><i class="ti ti-external-link" style="font-size:11px;"></i> Read</div>
+    </a>
+    <a href="https://the-tech.kz/womenintech-rost-vsegda-nachinaetsya-s-dvizheniya-kak-devushki-iz-kazahstana-stroyat-kareru-v-it/" target="_blank" class="card" style="display:block; padding:0.9rem 1rem; text-decoration:none;">
+      <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">The Tech KZ</div>
+      <div style="font-size:12px; font-weight:500; line-height:1.4; margin-bottom:4px;">WomenInTech: how women from Kazakhstan are building their careers in IT</div>
+      <div style="font-size:10px; color:var(--text-muted);">Russian</div>
+      <div style="font-size:11px; color:var(--text-muted); margin-top:6px;"><i class="ti ti-external-link" style="font-size:11px;"></i> Read</div>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://youtube.com/@m0rn1ngstr" target="_blank"><i class="ti ti-brand-youtube"></i> YouTube</a>
+    <a href="https://x.com/m0rn1ngstr" target="_blank"><i class="ti ti-brand-x"></i> X</a>
+    <a href="https://www.linkedin.com/in/katerina-shevchenko01/" target="_blank"><i class="ti ti-brand-linkedin"></i> LinkedIn</a>
+  </div>
+  <span>// hello, friend. &copy; 2026 m0rn1ngstr</span>
+</footer>
+
+</body>
+</html>
