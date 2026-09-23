@@ -21,18 +21,20 @@
       display:grid; grid-template-columns:44px 1fr auto; gap:12px; align-items:center;
       background:var(--surface); border:0.5px solid var(--border);
       border-radius:8px; padding:12px 14px; margin-bottom:8px;
-      text-decoration:none; transition:border-color 0.2s;
+      transition:border-color 0.2s;
     }
     .guest-card:hover { border-color:var(--red); }
     .guest-ts {
       font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red);
       background:var(--red-dim); border:0.5px solid var(--red-border);
       padding:4px 8px; border-radius:5px; flex-shrink:0; text-align:center;
+      text-decoration:none;
     }
+    .guest-main { text-decoration:none; min-width:0; }
     .guest-name { font-size:14px; font-weight:500; color:var(--text); }
     .guest-field { font-size:12px; color:var(--text-muted); margin-top:1px; }
-    .guest-links { display:flex; gap:8px; flex-shrink:0; }
-    .guest-links a { color:var(--text-muted); transition:color 0.2s; }
+    .guest-links { display:flex; gap:10px; flex-shrink:0; align-items:center; }
+    .guest-links a { color:var(--text-muted); transition:color 0.2s; display:flex; }
     .guest-links a:hover { color:var(--red); }
     .res-link { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:6px; border:0.5px solid var(--border); margin-bottom:6px; text-decoration:none; transition:border-color 0.2s; background:var(--surface); }
     .res-link:hover { border-color:var(--purple); }
@@ -96,101 +98,101 @@
   <div class="section-head">guests</div>
   <div style="margin-bottom:2.5rem;">
 
-    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=19s" target="_blank" class="guest-card">
-      <span class="guest-ts">00:19</span>
-      <div>
+    <div class="guest-card">
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=19s" target="_blank" class="guest-ts">00:19</a>
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=19s" target="_blank" class="guest-main">
         <div class="guest-name">Billy Giles</div>
         <div class="guest-field">Red teaming</div>
-      </div>
+      </a>
       <div class="guest-links">
         <a href="https://www.linkedin.com/in/wrgiles/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
         <a href="https://thinkingoffensively.com/" target="_blank"><i class="ti ti-world" style="font-size:15px;"></i></a>
       </div>
-    </a>
+    </div>
 
-    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=174s" target="_blank" class="guest-card">
-      <span class="guest-ts">02:54</span>
-      <div>
+    <div class="guest-card">
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=174s" target="_blank" class="guest-ts">02:54</a>
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=174s" target="_blank" class="guest-main">
         <div class="guest-name">Seth Art</div>
         <div class="guest-field">Cloud penetration testing</div>
-      </div>
+      </a>
       <div class="guest-links">
         <a href="https://www.linkedin.com/in/sethart/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
         <a href="https://x.com/sethsec" target="_blank"><i class="ti ti-brand-x" style="font-size:15px;"></i></a>
       </div>
-    </a>
+    </div>
 
-    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=280s" target="_blank" class="guest-card">
-      <span class="guest-ts">04:40</span>
-      <div>
+    <div class="guest-card">
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=280s" target="_blank" class="guest-ts">04:40</a>
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=280s" target="_blank" class="guest-main">
         <div class="guest-name">Danilo Erazo</div>
         <div class="guest-field">Automotive security</div>
-      </div>
+      </a>
       <div class="guest-links">
         <a href="https://www.linkedin.com/in/danilo-erazo/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
         <a href="https://www.youtube.com/@revers3everything" target="_blank"><i class="ti ti-brand-youtube" style="font-size:15px;"></i></a>
       </div>
-    </a>
+    </div>
 
-    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=662s" target="_blank" class="guest-card">
-      <span class="guest-ts">11:02</span>
-      <div>
+    <div class="guest-card">
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=662s" target="_blank" class="guest-ts">11:02</a>
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=662s" target="_blank" class="guest-main">
         <div class="guest-name">Bar Kaduri</div>
         <div class="guest-field">Application security</div>
-      </div>
+      </a>
       <div class="guest-links">
         <a href="https://www.linkedin.com/in/bar-kaduri/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
       </div>
-    </a>
+    </div>
 
-    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=815s" target="_blank" class="guest-card">
-      <span class="guest-ts">13:35</span>
-      <div>
+    <div class="guest-card">
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=815s" target="_blank" class="guest-ts">13:35</a>
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=815s" target="_blank" class="guest-main">
         <div class="guest-name">Jayson E. Street</div>
         <div class="guest-field">Social engineering</div>
-      </div>
+      </a>
       <div class="guest-links">
         <a href="https://www.linkedin.com/in/jstreet/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
         <a href="https://jaysonestreet.com/" target="_blank"><i class="ti ti-world" style="font-size:15px;"></i></a>
       </div>
-    </a>
+    </div>
 
-    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=1095s" target="_blank" class="guest-card">
-      <span class="guest-ts">18:15</span>
-      <div>
+    <div class="guest-card">
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=1095s" target="_blank" class="guest-ts">18:15</a>
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=1095s" target="_blank" class="guest-main">
         <div class="guest-name">Jeff Foley</div>
         <div class="guest-field">OSINT</div>
-      </div>
+      </a>
       <div class="guest-links">
         <a href="https://www.linkedin.com/in/caffix/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
         <a href="https://x.com/jeff_foley" target="_blank"><i class="ti ti-brand-x" style="font-size:15px;"></i></a>
       </div>
-    </a>
+    </div>
 
-    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=1281s" target="_blank" class="guest-card">
-      <span class="guest-ts">21:21</span>
-      <div>
+    <div class="guest-card">
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=1281s" target="_blank" class="guest-ts">21:21</a>
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=1281s" target="_blank" class="guest-main">
         <div class="guest-name">Catherine Cassell</div>
         <div class="guest-field">Hardware hacking</div>
-      </div>
+      </a>
       <div class="guest-links">
         <a href="https://www.linkedin.com/in/cgcassell/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
         <a href="https://x.com/PlutonianFern" target="_blank"><i class="ti ti-brand-x" style="font-size:15px;"></i></a>
       </div>
-    </a>
+    </div>
 
-    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=1580s" target="_blank" class="guest-card">
-      <span class="guest-ts">26:20</span>
-      <div>
+    <div class="guest-card">
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=1580s" target="_blank" class="guest-ts">26:20</a>
+      <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=1580s" target="_blank" class="guest-main">
         <div class="guest-name">Katie Paxton-Fear</div>
         <div class="guest-field">Web application security</div>
-      </div>
+      </a>
       <div class="guest-links">
         <a href="https://www.linkedin.com/in/katiepf/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
         <a href="https://www.youtube.com/@InsiderPhD" target="_blank"><i class="ti ti-brand-youtube" style="font-size:15px;"></i></a>
         <a href="https://x.com/InsiderPhD" target="_blank"><i class="ti ti-brand-x" style="font-size:15px;"></i></a>
       </div>
-    </a>
+    </div>
 
   </div>
 
