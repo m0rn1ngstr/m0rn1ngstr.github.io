@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9PBD5KP569"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9PBD5KP569');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Hacker's Time Machine: Exploiting Systems Through History, Not Bugs - GISEC Global 2026 - m0rn1ngstr</title>
+  <meta name="description" content="GISEC Global 2026 Dark Stage talk. Finding forgotten API generations by reading a site's own version scheme, and comparing each survivor against the generation that replaced it. By m0rn1ngstr." />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    .res-link { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:6px; border:0.5px solid var(--border); margin-bottom:6px; text-decoration:none; transition:border-color 0.2s; background:var(--surface); }
+    .res-link:hover { border-color:var(--purple); }
+    a.card, a.card:visited { color:var(--text); }
+    .method-step { display:grid; grid-template-columns:auto 1fr; gap:14px; padding:14px 0; border-bottom:0.5px solid var(--border); }
+    .method-step:last-child { border-bottom:none; }
+    .method-num { font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:500; color:var(--red); background:var(--red-dim); border:0.5px solid var(--red-border); width:28px; height:28px; border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .method-title { font-size:14px; font-weight:500; color:var(--text); margin-bottom:2px; }
+    .method-desc { font-size:12px; color:var(--text-muted); line-height:1.5; }
+    .flip-quote { background:var(--surface); border:0.5px solid var(--border); border-left:2px solid var(--red); border-radius:6px; padding:1rem 1.3rem; margin:1.5rem 0; font-size:14px; line-height:1.7; color:var(--text-muted); }
+    .flip-quote strong { color:var(--text); font-weight:500; }
+    .event-badge { display:inline-flex; align-items:center; gap:6px; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); background:var(--red-dim); border:0.5px solid var(--red-border); padding:5px 12px; border-radius:5px; letter-spacing:0.5px; }
+    .tbd { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--amber); background:rgba(250,199,117,0.07); border:0.5px solid rgba(250,199,117,0.2); padding:2px 7px; border-radius:3px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">m0rn1ngstr<span>.</span></a>
+  <div class="nav-links">
+    <a href="../about.html">about</a>
+    <a href="../videos.html">videos</a>
+    <a href="../talks.html" class="active">talks &amp; media</a>
+    <a href="../work.html">work</a>
+  </div>
+</nav>
+
+<div style="padding:0.9rem 2rem; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); border-bottom:0.5px solid var(--border); display:flex; align-items:center; gap:8px;">
+  <a href="../index.html" style="color:var(--text-muted); text-decoration:none;">home</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <a href="../talks.html" style="color:var(--text-muted); text-decoration:none;">talks &amp; media</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <span style="color:var(--text);">hackers-time-machine</span>
+</div>
+
+<div style="max-width:1060px; margin:0 auto; display:grid; grid-template-columns:1fr 280px; gap:0;">
+
+  <!-- MAIN -->
+  <main style="padding:2.5rem 2rem; border-right:0.5px solid var(--border);">
+
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:1rem;">
+      <span class="event-badge"><i class="ti ti-microphone" style="font-size:12px;"></i> GISEC Global 2026</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">Dark Stage</span>
+      <span class="badge badge-purple" style="font-size:11px; padding:4px 10px;">Talk + Tool</span>
+    </div>
+
+    <h1 style="font-size:1.7rem; font-weight:300; line-height:1.2; letter-spacing:-0.5px; margin-bottom:0.4rem;">The Hacker's Time Machine: Exploiting Systems Through History, Not Bugs</h1>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted); margin-bottom:2rem;">// Dark Stage · GISEC Global 2026 · Dubai · Sep 16, 2026</div>
+
+    <div class="section-head">the talk</div>
+    <p style="font-size:14px; line-height:1.8; color:var(--text-muted); margin-bottom:1rem;">
+      Modern attacks rarely begin with a zero-day. They begin with the past: an API generation nobody calls
+      any more, a feature removed from the product but not the server, a build nobody switched off. It never
+      gets patched because it's on no asset list, no WAF rule, no SIEM alert.
+    </p>
+
+    <div class="flip-quote">
+      <strong>A vulnerability doesn't have to be new. It only has to be somewhere nobody looked.</strong>
+    </div>
+
+    <p style="font-size:14px; line-height:1.8; color:var(--text-muted); margin-bottom:2.5rem;">
+      The talk walks the full chain live: from a constant in a frontend bundle, to a superseded API version,
+      to a schema that version still publishes, and into material the site never meant to show.
+    </p>
+
+    <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+    <div class="section-head">the method</div>
+    <div style="margin-bottom:1rem;">
+      <div class="method-step">
+        <div class="method-num">1</div>
+        <div>
+          <div class="method-title">Read the frontend</div>
+          <div class="method-desc">The SPA names its API in a constant. <code style="font-family:'JetBrains Mono',monospace; color:var(--mint); font-size:11px;">const API_BASE = "/api/v3"</code></div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num">2</div>
+        <div>
+          <div class="method-title">Walk versions backwards</div>
+          <div class="method-desc">v3 implies v2 and v1. Backwards only, forward invents endpoints that never existed.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num">3</div>
+        <div>
+          <div class="method-title">Subtract</div>
+          <div class="method-desc">Known minus reachable. What's left is served and referenced nowhere.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num">4</div>
+        <div>
+          <div class="method-title">Read the schema</div>
+          <div class="method-desc">The old version still publishes its own routes and fields, including ones the product dropped.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num">5</div>
+        <div>
+          <div class="method-title">Pair and compare</div>
+          <div class="method-desc">Old against new: auth required? which fields return? Five fields against eleven is a finding.</div>
+        </div>
+      </div>
+      <div class="method-step">
+        <div class="method-num">6</div>
+        <div>
+          <div class="method-title">Flag, don't filter</div>
+          <div class="method-desc">Show everything, highlight the suspicious, let the researcher decide.</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside style="padding:2.5rem 1.5rem;">
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">the tool</div>
+      <a href="https://github.com/m0rn1ngstr/scrinium" target="_blank" class="res-link" style="flex-direction:column; align-items:flex-start; gap:6px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <i class="ti ti-brand-github" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">scrinium</div>
+        </div>
+        <div style="font-size:11px; color:var(--text-muted); line-height:1.5;">Finds what a site forgot it still serves. It finds and compares, it does not exploit.</div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">event</div>
+      <a href="https://gisec.ae/" target="_blank" class="res-link">
+        <i class="ti ti-external-link" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">GISEC Global 2026</div>
+          <div style="font-size:11px; color:var(--text-muted);">Dubai · 16–18 Sep 2026</div>
+        </div>
+      </a>
+    </div>
+
+    <div>
+      <div class="section-head">relevant certs</div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <span class="cert-pill">OSCP</span>
+        <span class="cert-pill">OSEP</span>
+        <span class="cert-pill">CRTO</span>
+        <span class="cert-pill">CREST CRT</span>
+        <span class="cert-pill">ARTE</span>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://youtube.com/@m0rn1ngstr" target="_blank"><i class="ti ti-brand-youtube"></i> YouTube</a>
+    <a href="https://x.com/m0rn1ngstr" target="_blank"><i class="ti ti-brand-x"></i> X</a>
+    <a href="https://www.linkedin.com/in/katerina-shevchenko01/" target="_blank"><i class="ti ti-brand-linkedin"></i> LinkedIn</a>
+  </div>
+  <span>// hello, friend. &copy; 2026 m0rn1ngstr</span>
+</footer>
+
+</body>
+</html>
