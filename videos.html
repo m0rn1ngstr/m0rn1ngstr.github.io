@@ -43,17 +43,40 @@
   <h1 class="page-title">Videos</h1>
   <p style="font-size:14px; color:var(--text-muted); line-height:1.8; max-width:580px; margin-bottom:3rem;">
     Attack walkthroughs, red team techniques, and cloud exploitation — broken down so you can replicate them yourself.
-    Each video page includes commands, labs, and resources.
+    Walkthrough pages include commands, labs, and resources.
   </p>
 
   <!-- ─── ADD NEW VIDEO CARDS HERE ─────────────────────────────────────
        Copy one card block and update:
          href     → videos/YOUR-VIDEO-SLUG.html
+         img src  → https://img.youtube.com/vi/YOUTUBE_ID/maxresdefault.jpg
          tag      → topic (AWS · Cloud / AD · Red Team / Web · Pentest etc)
          title    → video title
   ──────────────────────────────────────────────────────────────────── -->
 
   <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px;">
+
+    <a href="videos/8-hackers-defcon34.html" 
+        class="card card-red" 
+        style="display:block; text-decoration:none; overflow:hidden;">
+      <div style="width:100%; aspect-ratio:16/9; position:relative; overflow:hidden;">
+        <img src="https://img.youtube.com/vi/q-2yipzckyU/maxresdefault.jpg"
+              alt="I Asked 8 Hackers at DEF CON 34: What Do People Get Wrong About Your Field?"
+              style="width:100%; height:100%; object-fit:cover; display:block;">
+        <div style="position:absolute; inset:0; display:flex; align-items:center; 
+                    justify-content:center; background:rgba(0,0,0,0.25);">
+          <div style="width:40px; height:40px; border-radius:50%; background:var(--red);
+                      display:flex; align-items:center; justify-content:center;">
+            <i class="ti ti-player-play" style="color:#fff; font-size:16px; margin-left:2px;"></i>
+          </div>
+        </div>
+      </div>
+      <div style="padding:1rem;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); 
+                    letter-spacing:1px; text-transform:uppercase; margin-bottom:5px;">DEF CON 34 · Interviews</div>
+        <div style="font-size:13px; font-weight:500; line-height:1.4;">I Asked 8 Hackers at DEF CON 34: What Do People Get Wrong About Your Field?</div>
+      </div>
+    </a>
 
      <a href="videos/kerberos-attacks-part2.html" 
         class="card card-red" 
@@ -164,8 +187,6 @@
         <div style="font-size:13px; font-weight:500; line-height:1.4;">Certified Red Team Operator | CRTO - Review</div>
       </div>
     </a>
-
-    
 
     <!-- ADD MORE CARDS BELOW — duplicate the block above -->
 
