@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9PBD5KP569"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9PBD5KP569');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I Asked 8 Hackers at DEF CON 34: What Do People Get Wrong About Your Field? — m0rn1ngstr</title>
+  <meta name="description" content="Eight security professionals at DEF CON 34, two questions each: what outsiders get wrong about their field, and the simplest thing that still works." />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    a.card, a.card:visited { color:var(--text); }
+    .guest-card {
+      display:grid; grid-template-columns:44px 1fr auto; gap:12px; align-items:center;
+      background:var(--surface); border:0.5px solid var(--border);
+      border-radius:8px; padding:12px 14px; margin-bottom:8px;
+      text-decoration:none; transition:border-color 0.2s;
+    }
+    .guest-card:hover { border-color:var(--red); }
+    .guest-ts {
+      font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red);
+      background:var(--red-dim); border:0.5px solid var(--red-border);
+      padding:4px 8px; border-radius:5px; flex-shrink:0; text-align:center;
+    }
+    .guest-name { font-size:14px; font-weight:500; color:var(--text); }
+    .guest-field { font-size:12px; color:var(--text-muted); margin-top:1px; }
+    .guest-links { display:flex; gap:8px; flex-shrink:0; }
+    .guest-links a { color:var(--text-muted); transition:color 0.2s; }
+    .guest-links a:hover { color:var(--red); }
+    .res-link { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:6px; border:0.5px solid var(--border); margin-bottom:6px; text-decoration:none; transition:border-color 0.2s; background:var(--surface); }
+    .res-link:hover { border-color:var(--purple); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">m0rn1ngstr<span>.</span></a>
+  <div class="nav-links">
+    <a href="../about.html">about</a>
+    <a href="../videos.html" class="active">videos</a>
+    <a href="../talks.html">talks &amp; media</a>
+    <a href="../work.html">work</a>
+  </div>
+</nav>
+
+<div style="padding:0.9rem 2rem; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); border-bottom:0.5px solid var(--border); display:flex; align-items:center; gap:8px;">
+  <a href="../index.html" style="color:var(--text-muted); text-decoration:none;">home</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <a href="../videos.html" style="color:var(--text-muted); text-decoration:none;">videos</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <span style="color:var(--text);">8-hackers-defcon34</span>
+</div>
+
+<div style="max-width:900px; margin:0 auto; padding:2.5rem 2rem;">
+
+  <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:1rem;">
+    <span class="badge badge-hof" style="font-size:11px; padding:4px 10px;">DEF CON 34</span>
+    <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">Interviews</span>
+    <span class="badge badge-purple" style="font-size:11px; padding:4px 10px;">Community</span>
+  </div>
+
+  <h1 style="font-size:1.6rem; font-weight:300; line-height:1.2; letter-spacing:-0.5px; margin-bottom:0.4rem;">I Asked 8 Hackers at DEF CON 34: What Do People Get Wrong About Your Field?</h1>
+  <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted); margin-bottom:1.5rem;">// filmed at DEF CON 34 · Las Vegas</div>
+
+  <!-- VIDEO -->
+  <a href="https://www.youtube.com/watch?v=q-2yipzckyU" target="_blank"
+     style="display:block; width:100%; aspect-ratio:16/9; margin-bottom:2rem; border-radius:8px; overflow:hidden; border:0.5px solid var(--border); position:relative; text-decoration:none;">
+    <img src="https://img.youtube.com/vi/q-2yipzckyU/maxresdefault.jpg"
+         alt="I Asked 8 Hackers at DEF CON 34"
+         style="width:100%; height:100%; object-fit:cover; display:block;">
+    <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);">
+      <div style="width:64px; height:64px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center;">
+        <i class="ti ti-player-play" style="color:#fff; font-size:24px; margin-left:3px;"></i>
+      </div>
+    </div>
+  </a>
+
+  <div class="section-head">overview</div>
+  <p style="font-size:14px; line-height:1.75; color:var(--text-muted); margin-bottom:2.5rem;">
+    Eight people from different corners of security, the same two questions to each:
+    <strong style="color:var(--text); font-weight:500;">what do people outside your field get wrong about it</strong>,
+    and <strong style="color:var(--text); font-weight:500;">what's the simplest thing that still works</strong>.
+    Filmed at DEF CON 34 in Las Vegas, for everyone watching from the other side of the world.
+  </p>
+
+  <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+  <!-- GUESTS -->
+  <div class="section-head">guests</div>
+  <div style="margin-bottom:2.5rem;">
+
+    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=19s" target="_blank" class="guest-card">
+      <span class="guest-ts">00:19</span>
+      <div>
+        <div class="guest-name">Billy Giles</div>
+        <div class="guest-field">Red teaming</div>
+      </div>
+      <div class="guest-links">
+        <a href="https://www.linkedin.com/in/wrgiles/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
+        <a href="https://thinkingoffensively.com/" target="_blank"><i class="ti ti-world" style="font-size:15px;"></i></a>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=174s" target="_blank" class="guest-card">
+      <span class="guest-ts">02:54</span>
+      <div>
+        <div class="guest-name">Seth Art</div>
+        <div class="guest-field">Cloud penetration testing</div>
+      </div>
+      <div class="guest-links">
+        <a href="https://www.linkedin.com/in/sethart/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
+        <a href="https://x.com/sethsec" target="_blank"><i class="ti ti-brand-x" style="font-size:15px;"></i></a>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=280s" target="_blank" class="guest-card">
+      <span class="guest-ts">04:40</span>
+      <div>
+        <div class="guest-name">Danilo Erazo</div>
+        <div class="guest-field">Automotive security</div>
+      </div>
+      <div class="guest-links">
+        <a href="https://www.linkedin.com/in/danilo-erazo/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
+        <a href="https://www.youtube.com/@revers3everything" target="_blank"><i class="ti ti-brand-youtube" style="font-size:15px;"></i></a>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=662s" target="_blank" class="guest-card">
+      <span class="guest-ts">11:02</span>
+      <div>
+        <div class="guest-name">Bar Kaduri</div>
+        <div class="guest-field">Application security</div>
+      </div>
+      <div class="guest-links">
+        <a href="https://www.linkedin.com/in/bar-kaduri/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=815s" target="_blank" class="guest-card">
+      <span class="guest-ts">13:35</span>
+      <div>
+        <div class="guest-name">Jayson E. Street</div>
+        <div class="guest-field">Social engineering</div>
+      </div>
+      <div class="guest-links">
+        <a href="https://www.linkedin.com/in/jstreet/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
+        <a href="https://jaysonestreet.com/" target="_blank"><i class="ti ti-world" style="font-size:15px;"></i></a>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=1095s" target="_blank" class="guest-card">
+      <span class="guest-ts">18:15</span>
+      <div>
+        <div class="guest-name">Jeff Foley</div>
+        <div class="guest-field">OSINT</div>
+      </div>
+      <div class="guest-links">
+        <a href="https://www.linkedin.com/in/caffix/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
+        <a href="https://x.com/jeff_foley" target="_blank"><i class="ti ti-brand-x" style="font-size:15px;"></i></a>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=1281s" target="_blank" class="guest-card">
+      <span class="guest-ts">21:21</span>
+      <div>
+        <div class="guest-name">Catherine Cassell</div>
+        <div class="guest-field">Hardware hacking</div>
+      </div>
+      <div class="guest-links">
+        <a href="https://www.linkedin.com/in/cgcassell/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
+        <a href="https://x.com/PlutonianFern" target="_blank"><i class="ti ti-brand-x" style="font-size:15px;"></i></a>
+      </div>
+    </a>
+
+    <a href="https://www.youtube.com/watch?v=q-2yipzckyU&t=1580s" target="_blank" class="guest-card">
+      <span class="guest-ts">26:20</span>
+      <div>
+        <div class="guest-name">Katie Paxton-Fear</div>
+        <div class="guest-field">Web application security</div>
+      </div>
+      <div class="guest-links">
+        <a href="https://www.linkedin.com/in/katiepf/" target="_blank"><i class="ti ti-brand-linkedin" style="font-size:15px;"></i></a>
+        <a href="https://www.youtube.com/@InsiderPhD" target="_blank"><i class="ti ti-brand-youtube" style="font-size:15px;"></i></a>
+        <a href="https://x.com/InsiderPhD" target="_blank"><i class="ti ti-brand-x" style="font-size:15px;"></i></a>
+      </div>
+    </a>
+
+  </div>
+
+  <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+  <!-- MORE -->
+  <div class="section-head">more videos</div>
+  <a href="kerberos-attacks-part2.html" class="card" style="display:flex; gap:12px; align-items:flex-start; padding:12px; text-decoration:none; max-width:420px;">
+    <div style="width:64px; height:44px; border-radius:4px; overflow:hidden; flex-shrink:0;">
+      <img src="https://img.youtube.com/vi/zXkzyYiD6xU/mqdefault.jpg" style="width:100%; height:100%; object-fit:cover; display:block;">
+    </div>
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--red); letter-spacing:1px; text-transform:uppercase;">Active Directory · Kerberos</div>
+      <div style="font-size:12px; font-weight:500; color:var(--text); line-height:1.35; margin-top:2px;">Kerberos Attacks Part 2: Ticket Harvesting and Pass-the-Ticket</div>
+    </div>
+  </a>
+
+  <p style="font-size:11px; color:var(--text-muted); line-height:1.6; margin-top:2rem; opacity:0.7;">
+    Filmed with permission from everyone featured, following DEF CON's photography policy.
+  </p>
+
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://youtube.com/@m0rn1ngstr" target="_blank"><i class="ti ti-brand-youtube"></i> YouTube</a>
+    <a href="https://x.com/m0rn1ngstr" target="_blank"><i class="ti ti-brand-x"></i> X</a>
+    <a href="https://www.linkedin.com/in/katerina-shevchenko01/" target="_blank"><i class="ti ti-brand-linkedin"></i> LinkedIn</a>
+  </div>
+  <span>// hello, friend. &copy; 2026 m0rn1ngstr</span>
+</footer>
+
+</body>
+</html>
