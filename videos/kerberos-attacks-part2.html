@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9PBD5KP569"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9PBD5KP569');
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kerberos Attacks Part 2: Ticket Harvesting and Pass-the-Ticket, m0rn1ngstr</title>
+  <title>Kerberos Attacks Part 2: Ticket Harvesting and Pass-the-Ticket — m0rn1ngstr</title>
   <meta name="description" content="Ticket harvesting with Rubeus and pass-the-ticket attacks explained, with OPSEC considerations for stealthy Kerberos abuse in Active Directory." />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
@@ -23,10 +31,6 @@
     .attack-divider { display:flex; align-items:center; gap:12px; margin:2rem 0 1.5rem; }
     .attack-divider-label { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); letter-spacing:2px; text-transform:uppercase; white-space:nowrap; }
     .attack-divider-line { flex:1; height:0.5px; background:var(--border); }
-    .ref-table { width:100%; border-collapse:collapse; margin-bottom:1rem; font-size:12px; }
-    .ref-table td { padding:8px 10px; border-bottom:0.5px solid var(--border); vertical-align:top; }
-    .ref-table td:first-child { font-family:'JetBrains Mono',monospace; color:var(--mint); white-space:nowrap; padding-right:16px; }
-    .ref-table td:last-child { color:var(--text-muted); line-height:1.5; }
     .opsec-note { background:var(--surface); border:0.5px solid var(--red-border); border-left:2px solid var(--red); border-radius:6px; padding:12px 14px; margin-bottom:1.5rem; font-size:13px; color:var(--text-muted); line-height:1.6; }
     .opsec-note strong { color:var(--text); font-weight:500; }
   </style>
@@ -170,6 +174,26 @@ Rubeus.exe purge</div>
   <aside style="padding:2.5rem 1.5rem;">
 
     <div style="margin-bottom:2rem;">
+      <div class="section-head">kerberos series</div>
+      <a href="kerberos-attacks-part1.html" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">Part 1</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Enumeration, Kerberoasting &amp; AS-REP Roasting</div>
+      </a>
+      <a href="kerberos-attacks-part2.html" class="lab-card" style="border-color:var(--red-border);">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">Part 2 · you are here</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Ticket Harvesting &amp; Pass-the-Ticket</div>
+      </a>
+      <a href="kerberos-attacks-part3.html" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">Part 3</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Silver, Golden, Diamond &amp; Sapphire</div>
+      </a>
+      <a href="https://youtube.com/playlist?list=PL0XlvOUlwREcUpPEhs7Z5yhCnROR3fjhB" target="_blank" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--purple); letter-spacing:1px; margin-bottom:3px;">Playlist</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Full series on YouTube ↗</div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
       <div class="section-head">lab to practice</div>
       <a href="https://tryhackme.com/room/attackingkerberos" target="_blank" class="lab-card">
         <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">TryHackMe</div>
@@ -216,20 +240,6 @@ Rubeus.exe purge</div>
         <span class="cert-pill">OSEP</span>
         <span class="cert-pill">CRTO</span>
       </div>
-    </div>
-
-    <div>
-      <div class="section-head">more videos</div>
-      <a href="kerberos-attacks-part1.html" class="card" style="display:flex; gap:10px; align-items:flex-start; padding:10px; text-decoration:none; margin-bottom:7px;">
-        <div style="width:52px; height:36px; border-radius:4px; overflow:hidden; flex-shrink:0;">
-          <img src="https://img.youtube.com/vi/U1nMgb8AEB4/mqdefault.jpg"
-               style="width:100%; height:100%; object-fit:cover; display:block;">
-        </div>
-        <div>
-          <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--red); letter-spacing:1px; text-transform:uppercase;">Active Directory · Kerberos</div>
-          <div style="font-size:11px; font-weight:500; color:var(--text); line-height:1.35; margin-top:2px;">Kerberos Attacks Part 1: User Enumeration, Kerberoasting and AS-REP Roasting</div>
-        </div>
-      </a>
     </div>
 
   </aside>
