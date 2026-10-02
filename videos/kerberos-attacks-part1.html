@@ -71,7 +71,7 @@
   <span style="color:var(--red); opacity:0.5;">/</span>
   <a href="../videos.html" style="color:var(--text-muted); text-decoration:none;">videos</a>
   <span style="color:var(--red); opacity:0.5;">/</span>
-  <span style="color:var(--text);">kerberos-attacks-user-enumeration-kerberoasting-asrep-roasting</span>
+  <span style="color:var(--text);">kerberos-attacks-part1</span>
 </div>
 
 <div style="max-width:1060px; margin:0 auto; display:grid; grid-template-columns:1fr 280px; gap:0;">
@@ -86,8 +86,8 @@
       <span class="badge badge-purple" style="font-size:11px; padding:4px 10px;">Red Team</span>
     </div>
 
-    <h1 style="font-size:1.6rem; font-weight:300; line-height:1.2; letter-spacing:-0.5px; margin-bottom:0.4rem;">Kerberos Attacks Explained: User Enumeration, Kerberoasting and AS-REP Roasting</h1>
-    <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted); margin-bottom:1.5rem;">// published · 2022-08-02</div>
+    <h1 style="font-size:1.6rem; font-weight:300; line-height:1.2; letter-spacing:-0.5px; margin-bottom:0.4rem;">Kerberos Attacks Part 1: User Enumeration, Kerberoasting and AS-REP Roasting</h1>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text-muted); margin-bottom:1.5rem;">// part 1 of the Kerberos series</div>
 
     <!-- VIDEO THUMBNAIL -->
     <a href="https://www.youtube.com/watch?v=U1nMgb8AEB4" target="_blank"
@@ -307,6 +307,26 @@ hashcat -m 18200 -a 0 hash2.txt Pass.txt</div>
   <aside style="padding:2.5rem 1.5rem;">
 
     <div style="margin-bottom:2rem;">
+      <div class="section-head">kerberos series</div>
+      <a href="kerberos-attacks-part1.html" class="lab-card" style="border-color:var(--red-border);">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">Part 1 · you are here</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Enumeration, Kerberoasting &amp; AS-REP Roasting</div>
+      </a>
+      <a href="kerberos-attacks-part2.html" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">Part 2</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Ticket Harvesting &amp; Pass-the-Ticket</div>
+      </a>
+      <a href="kerberos-attacks-part3.html" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">Part 3</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Silver, Golden, Diamond &amp; Sapphire</div>
+      </a>
+      <a href="https://youtube.com/playlist?list=PL0XlvOUlwREcUpPEhs7Z5yhCnROR3fjhB" target="_blank" class="lab-card">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--purple); letter-spacing:1px; margin-bottom:3px;">Playlist</div>
+        <div style="font-size:12px; font-weight:500; color:var(--text);">Full series on YouTube ↗</div>
+      </a>
+    </div>
+
+    <div style="margin-bottom:2rem;">
       <div class="section-head">lab to practice</div>
       <a href="https://tryhackme.com/room/attackingkerberos" target="_blank" class="lab-card">
         <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--red); letter-spacing:1px; margin-bottom:3px;">TryHackMe</div>
@@ -368,20 +388,6 @@ hashcat -m 18200 -a 0 hash2.txt Pass.txt</div>
         <span class="cert-pill">OSEP</span>
         <span class="cert-pill">CRTO</span>
       </div>
-    </div>
-
-    <div>
-      <div class="section-head">more videos</div>
-      <a href="crto-cert-review.html" class="card" style="display:flex; gap:10px; align-items:flex-start; padding:10px; text-decoration:none; margin-bottom:7px;">
-        <div style="width:52px; height:36px; border-radius:4px; overflow:hidden; flex-shrink:0;">
-          <img src="https://img.youtube.com/vi/Mb-lUgCVmOY/mqdefault.jpg"
-               style="width:100%; height:100%; object-fit:cover; display:block;">
-        </div>
-        <div>
-          <div style="font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--red); letter-spacing:1px; text-transform:uppercase;">Certification · Red Team</div>
-          <div style="font-size:11px; font-weight:500; color:var(--text); line-height:1.35; margin-top:2px;">Certified Red Team Operator | CRTO Review</div>
-        </div>
-      </a>
     </div>
 
   </aside>
